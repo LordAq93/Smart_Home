@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Products — Bayt Control</title>
+<meta name="description" content="Smart home hardware for Riyadh homes: AC control, locks, gate control, switches, plugs and sensors. Installed in one visit.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--petrol:#0E2A2B;--deep:#071A1B;--cool:#4FB8A8;--cool-dim:#2E7A70;--mist:#E8F1EE;--slate:#7E9895;--amber:#E8A33D;--line:rgba(232,241,238,.14);
+--display:'Bricolage Grotesque','Trebuchet MS',system-ui,sans-serif;--body:'IBM Plex Sans Arabic',system-ui,-apple-system,sans-serif;--mono:'IBM Plex Mono',ui-monospace,monospace}
+html[dir=rtl] h1,html[dir=rtl] h2,html[dir=rtl] h3,html[dir=rtl] .brand{font-family:var(--body);font-weight:600;letter-spacing:0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--petrol);color:var(--mist);font-family:var(--body);font-weight:300;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{max-width:1140px;margin:0 auto;padding:0 24px}
+h1,h2,h3{font-family:var(--display);font-weight:800;line-height:1.03;letter-spacing:-.035em}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+:focus-visible{outline:2px solid var(--cool);outline-offset:3px;border-radius:3px}
+.hidden{display:none!important}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--cool);display:flex;align-items:center;gap:10px}
+.eyebrow::before{content:"";width:26px;height:1px;background:var(--cool-dim)}
+html[dir=rtl] .eyebrow{letter-spacing:0}
+.nav{position:sticky;top:0;z-index:60;background:rgba(14,42,43,.85);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:64px;gap:20px}
+.brand{font-family:var(--display);font-weight:800;font-size:19px;letter-spacing:-.04em}
+.brand span{color:var(--cool)}
+.links{display:flex;gap:26px;font-size:14.5px;color:var(--slate)}
+.links a:hover,.links a.on{color:var(--mist)}
+.lang{font-family:var(--mono);font-size:12px;border:1px solid var(--line);padding:7px 13px;border-radius:999px;color:var(--slate)}
+.lang:hover{color:var(--mist)}
+@media(max-width:860px){.links{display:none}}
+
+.head{padding:52px 0 36px}
+.crumb{font-family:var(--mono);font-size:11.5px;color:var(--slate);margin-bottom:20px;letter-spacing:.05em}
+html[dir=rtl] .crumb{letter-spacing:0}
+.head h1{font-size:clamp(32px,4.6vw,54px);margin:16px 0 16px}
+.head p{color:var(--slate);max-width:54ch}
+
+.filters{position:sticky;top:64px;z-index:50;background:rgba(14,42,43,.92);backdrop-filter:blur(12px);border-block:1px solid var(--line);padding:15px 0}
+.frow{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+.fgroup{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.flab{font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--slate)}
+html[dir=rtl] .flab{letter-spacing:0}
+.chip{border:1px solid var(--line);border-radius:999px;padding:8px 15px;font-size:13.5px;color:var(--slate);transition:.18s}
+.chip:hover{border-color:var(--cool-dim);color:var(--mist)}
+.chip[aria-pressed=true]{border-color:var(--cool);color:var(--mist);background:rgba(79,184,168,.11)}
+.count{margin-inline-start:auto;font-family:var(--mono);font-size:12px;color:var(--slate)}
+
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;padding:40px 0 20px}
+.pcard{background:var(--deep);border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:9px;position:relative;transition:border-color .2s}
+.pcard:hover{border-color:var(--cool-dim)}
+.pcard.open{border-color:var(--cool)}
+.pcard .g{font-size:26px;color:var(--cool)}
+.pcard .cat{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--cool-dim)}
+html[dir=rtl] .pcard .cat{letter-spacing:0}
+.pcard h3{font-size:18px;letter-spacing:-.015em}
+.pcard p{font-size:14px;color:var(--slate)}
+.prow{display:flex;justify-content:space-between;align-items:baseline;margin-top:10px;padding-top:14px;border-top:1px solid var(--line)}
+.price{font-family:var(--mono);font-size:17px;color:var(--cool);font-variant-numeric:tabular-nums}
+.price s{color:var(--slate);font-size:12.5px;margin-inline-start:7px}
+.flag{position:absolute;inset-block-start:18px;inset-inline-end:18px;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;padding:4px 8px;border-radius:5px}
+html[dir=rtl] .flag{letter-spacing:0}
+.flag.pop{background:rgba(79,184,168,.16);color:var(--cool)}
+.flag.low{background:rgba(232,163,61,.16);color:var(--amber)}
+.expand{font-family:var(--mono);font-size:11.5px;color:var(--slate);align-self:flex-start;border-bottom:1px solid var(--line);padding-bottom:2px}
+.expand:hover{color:var(--cool);border-color:var(--cool-dim)}
+.detail{border-top:1px solid var(--line);margin-top:12px;padding-top:14px;font-size:13.5px;color:var(--slate)}
+.detail dl{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
+.detail dl>div{display:flex;justify-content:space-between;gap:14px}
+.detail dt{color:var(--slate)}
+.detail dd{font-family:var(--mono);font-size:12px;color:var(--mist);text-align:end}
+.acts{display:flex;gap:9px;margin-top:12px}
+.want{flex:1;background:var(--cool);color:var(--deep);font-weight:600;font-size:14.5px;border-radius:10px;padding:13px}
+.want:hover{background:var(--mist)}
+.want.done{background:transparent;color:var(--cool);border:1px solid var(--cool-dim);cursor:default}
+.more{border:1px solid var(--line);border-radius:10px;padding:13px 16px;font-size:14px;color:var(--slate)}
+.more:hover{border-color:var(--cool-dim);color:var(--mist)}
+.empty{padding:60px 0;text-align:center;color:var(--slate);font-family:var(--mono);font-size:13px}
+
+.note{margin:44px 0 0;border:1px dashed var(--line);border-radius:14px;padding:22px 26px;font-size:14.5px;color:var(--slate)}
+.note b{color:var(--mist);font-weight:500}
+footer{padding:44px 0;margin-top:56px;border-top:1px solid var(--line);font-family:var(--mono);font-size:12px;color:var(--slate);display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
+
+.overlay{position:fixed;inset:0;background:rgba(3,14,15,.8);z-index:100;display:none;place-items:center;padding:24px}
+.overlay.show{display:grid}
+.modal{background:var(--petrol);border:1px solid var(--line);border-radius:20px;max-width:450px;width:100%;padding:32px}
+.modal h3{font-size:24px;margin-bottom:10px}
+.modal p{color:var(--slate);font-size:14.5px;margin-bottom:20px}
+.modal input,.modal select{width:100%;background:var(--deep);border:1px solid var(--line);border-radius:10px;padding:13px 15px;color:var(--mist);font-family:var(--body);font-size:16px;margin-bottom:11px}
+.modal input::placeholder{color:var(--slate);opacity:.6}
+.modal .want{width:100%;margin-top:5px}
+.dismiss{display:block;width:100%;text-align:center;font-family:var(--mono);font-size:12px;color:var(--slate);margin-top:14px}
+
+.panel-btn{position:fixed;inset-block-end:20px;inset-inline-end:20px;z-index:90;background:var(--amber);color:var(--deep);font-family:var(--mono);font-size:12px;font-weight:500;padding:11px 17px;border-radius:999px;box-shadow:0 8px 26px rgba(0,0,0,.45)}
+.panel{position:fixed;inset-block:0;inset-inline-end:0;width:min(380px,100%);z-index:110;background:var(--deep);border-inline-start:1px solid var(--line);transform:translateX(105%);transition:transform .3s;display:flex;flex-direction:column}
+html[dir=rtl] .panel{transform:translateX(-105%)}
+.panel.open{transform:translateX(0)}
+.panel-head{padding:20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;font-family:var(--mono);font-size:13px}
+.panel-body{padding:20px;overflow-y:auto;flex:1}
+.lb-h{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--slate);display:flex;justify-content:space-between;padding-bottom:9px;border-bottom:1px solid var(--line)}
+.lb-row{display:grid;grid-template-columns:1fr 34px 34px 34px;gap:6px;align-items:center;padding:9px 0;border-bottom:1px solid rgba(232,241,238,.07);font-family:var(--mono);font-size:11.5px;color:var(--slate)}
+.lb-row .nm{color:var(--mist);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lb-row .w{color:var(--cool);text-align:end}
+.lb-row.top .nm{color:var(--cool)}
+.bar{height:2px;background:var(--cool);border-radius:2px;grid-column:1/-1;opacity:.5}
+.log{font-family:var(--mono);font-size:11px;margin-top:20px}
+.log div{display:flex;gap:9px;padding:6px 0;border-bottom:1px solid rgba(232,241,238,.07);color:var(--slate)}
+.log .t{color:var(--cool-dim)}
+.log .e{color:var(--mist)}
+.panel-foot{padding:16px 20px;border-top:1px solid var(--line);font-family:var(--mono);font-size:10.5px;color:var(--slate);line-height:1.75}
+@media(max-width:960px){.grid{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.filters{position:static}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="wrap nav-in">
+  <a class="brand" href="index.html">Bayt<span>·</span>Control</a>
+  <div class="links">
+    <a href="index.html" data-en="Home" data-ar="الرئيسية">Home</a>
+    <a href="products.html" class="on" data-en="Products" data-ar="المنتجات">Products</a>
+    <a href="index.html#how" data-en="How it works" data-ar="كيف يشتغل">How it works</a>
+    <a href="index.html#install" data-en="Installation" data-ar="التركيب">Installation</a>
+  </div>
+  <button class="lang" id="langBtn">العربية</button>
+</div></nav>
+
+<header class="head"><div class="wrap">
+  <div class="crumb" id="crumb">HOME / PRODUCTS</div>
+  <div class="eyebrow" data-en="11 products · pilot pricing" data-ar="١١ منتج · أسعار التجربة">11 products · pilot pricing</div>
+  <h1 data-en="Buy the pieces your house is missing" data-ar="اشترِ القطع الناقصة في بيتك">Buy the pieces your house is missing</h1>
+  <p data-en="Everything runs on the same hub, so you can start with one room and add the rest later without a second setup. Tap any product to see what it does and reserve one." data-ar="كل شي يشتغل على نفس الوحدة المركزية، فتقدر تبدأ بغرفة وحدة وتضيف الباقي بعدين بدون إعداد ثاني. اضغط أي منتج تشوف تفاصيله وتحجزه.">Everything runs on the same hub, so you can start with one room and add the rest later without a second setup. Tap any product to see what it does and reserve one.</p>
+</div></header>
+
+<div class="filters"><div class="wrap frow">
+  <div class="fgroup"><span class="flab" data-en="Room" data-ar="المنطقة">Room</span><div id="catChips"></div></div>
+  <div class="fgroup"><span class="flab" data-en="Price" data-ar="السعر">Price</span><div id="priceChips"></div></div>
+  <span class="count" id="count"></span>
+</div></div>
+
+<div class="wrap">
+  <div class="grid" id="grid"></div>
+  <div class="empty hidden" id="empty"></div>
+  <p class="note" data-en="<b>Installation is 250 SAR for the whole home, once.</b> Not per device. If you reserve six things and only need four, the technician says so on the call before anything ships." data-ar="<b>التركيب ٢٥٠ ريال للبيت كامل، مرة وحدة.</b> مو لكل جهاز. ولو حجزت ست قطع وتحتاج أربع بس، الفني يقول لك بالمكالمة قبل ما نشحن."><b>Installation is 250 SAR for the whole home, once.</b> Not per device. If you reserve six things and only need four, the technician says so on the call before anything ships.</p>
+  <footer><span>Bayt Control · Riyadh</span><span id="srcLine">source: direct</span></footer>
+</div>
+
+<div class="overlay" id="overlay"><div class="modal">
+  <div id="formView">
+    <h3 id="mHead"></h3>
+    <p id="mBody"></p>
+    <input type="text" id="mName">
+    <input type="tel" id="mPhone" placeholder="05X XXX XXXX">
+    <select id="mWhen"></select>
+    <button class="want" id="mSubmit"></button>
+    <button class="dismiss" id="mClose"></button>
+  </div>
+  <div id="okView" class="hidden">
+    <h3 id="okHead" style="color:var(--cool)"></h3>
+    <p id="okBody"></p>
+    <button class="dismiss" id="okClose"></button>
+  </div>
+</div></div>
+
+<button class="panel-btn" id="panelBtn">◉ TEST</button>
+<aside class="panel" id="panel">
+  <div class="panel-head"><span>ENGAGEMENT BY PRODUCT</span><button id="closePanel" style="color:var(--slate)">✕</button></div>
+  <div class="panel-body">
+    <div class="lb-h"><span>PRODUCT</span><span>SEEN · OPEN · WANT</span></div>
+    <div id="board"></div>
+    <div class="log" id="log"></div>
+  </div>
+  <div class="panel-foot">Ranked by weighted score: <b>seen ×1, opened ×4, reserved ×20</b>. This panel is one session only — real cross-visitor numbers come from GA4 or the ENDPOINT constant at the top of the script.</div>
+</aside>
+
+<script>
+/* ==== SET THIS to collect real data across visitors ====
+   Paste a Google Apps Script web-app URL, Formspree, or your own endpoint.
+   Leave empty and events stay in the browser + dataLayer only. */
+const ENDPOINT = "";
+
+const SLUG={ac:'smart-ac-controller.html',thermo:'zone-thermostat.html',temp:'room-temperature-sensor.html',lock:'smart-door-lock.html',gate:'gate-controller.html',intercom:'video-intercom.html',switch:'smart-wall-switch.html',dimmer:'dimmer-switch.html',plug:'smart-plug-16a.html',leak:'water-leak-sensor.html',hub:'smart-home-hub.html'};
+const CATALOG=[
+ {id:'ac',g:'❄',c:'climate',price:349,was:449,flag:'pop',
+  en:['AC controller','Learns any split-unit remote. Reads room temperature and humidity itself.'],
+  ar:['متحكّم المكيّف','يتعلّم ريموت أي مكيّف سبليت ويقرأ حرارة ورطوبة الغرفة بنفسه.'],
+  spec:[['compat','Any IR split unit'],['sensor','Temp ±0.3°C'],['net','Wi-Fi 2.4GHz'],['size','62 × 62 × 18 mm']]},
+ {id:'thermo',g:'◉',c:'climate',price:429,
+  en:['Zone thermostat','Wired replacement for central AC. One per floor, so upstairs stops cooling an empty room.'],
+  ar:['ثرموستات المناطق','بديل سلكي للتكييف المركزي. واحد لكل دور، عشان الدور العلوي ما يبرّد غرفة فاضية.'],
+  spec:[['wiring','24V, 4–6 wire'],['display','2.4" touch'],['fits','86mm back box'],['install','Technician required']]},
+ {id:'temp',g:'△',c:'climate',price:59,
+  en:['Room temperature sensor','Lets the AC read the room you sleep in, not the hallway.'],
+  ar:['حساس حرارة الغرفة','يخلي المكيف يقرأ الغرفة اللي تنام فيها، مو الممر.'],
+  spec:[['accuracy','±0.3°C'],['battery','CR2450, ~18 months'],['net','Bluetooth to hub'],['size','40 × 40 × 11 mm']]},
+ {id:'lock',g:'⌘',c:'security',price:500,was:650,flag:'pop',
+  en:['Smart door lock','Fingerprint, code, phone or the original key. Fits most villa doors.'],
+  ar:['قفل الباب الذكي','بصمة أو رمز أو جوال أو المفتاح الأصلي. يناسب أغلب أبواب الفلل.'],
+  spec:[['unlock','Fingerprint · code · app · key'],['battery','4× AA, ~10 months'],['door','38 – 65 mm'],['body','Zinc alloy, IP54']]},
+ {id:'gate',g:'⊟',c:'security',price:449,
+  en:['Gate controller','Wires into the existing gate motor. Open from the car, or automatically on arrival.'],
+  ar:['متحكّم البوابة','يتوصّل مع محرك البوابة الحالي. افتح من السيارة أو تلقائياً عند الوصول.'],
+  spec:[['compat','Most 220V gate motors'],['relay','Dry contact, 2 channel'],['net','Wi-Fi 2.4GHz'],['install','Technician required']]},
+ {id:'intercom',g:'▣',c:'security',price:699,flag:'low',
+  en:['Video intercom','See and talk to whoever is at the gate, from anywhere. Keeps the same wiring.'],
+  ar:['إنتركم بالفيديو','شوف وكلّم اللي عند البوابة من أي مكان. ويستخدم نفس التمديدات.'],
+  spec:[['camera','1080p, 140°'],['night','IR to 5 m'],['power','Existing 2-wire'],['net','Wi-Fi 2.4GHz']]},
+ {id:'switch',g:'◫',c:'lighting',price:189,
+  en:['Wall switch, 3 gang','Replaces the plate, not the wiring. Still works by hand if the internet drops.'],
+  ar:['مفتاح جداري ٣ أزرار','يستبدل الغطاء، مو التمديدات. ويشتغل باليد لو انقطع النت.'],
+  spec:[['fits','86mm back box'],['neutral','Required'],['load','10A per gang'],['manual','Always works']]},
+ {id:'dimmer',g:'◐',c:'lighting',price:229,
+  en:['Dimmer switch','For the majlis. Warm and full at Maghrib, low after Isha, untouched.'],
+  ar:['مفتاح تعتيم','للمجلس. دافي وكامل عند المغرب، وخافت بعد العشاء، بدون ما أحد يلمسه.'],
+  spec:[['fits','86mm back box'],['load','300W dimmable LED'],['range','1 – 100%'],['neutral','Required']]},
+ {id:'plug',g:'◈',c:'power',price:89,was:129,flag:'pop',
+  en:['Smart plug 16A','Switches from your phone and counts every watt. Handles a freezer or window AC.'],
+  ar:['فيشة ذكية ١٦ أمبير','تتحكم فيها من جوالك وتحسب كل واط. تتحمّل فريزر أو مكيف شباك.'],
+  spec:[['rating','16A / 3680W, Type G'],['metering','Yes, ±1%'],['offline','Schedules keep running'],['cert','SASO marked']]},
+ {id:'leak',g:'◌',c:'power',price:79,
+  en:['Water leak sensor','Sits flat under the sink or behind the washing machine. Alerts on the first drop.'],
+  ar:['حساس تسريب المياه','يوضع تحت المغسلة أو خلف الغسالة. ينبّهك من أول قطرة.'],
+  spec:[['battery','CR2032, ~2 years'],['alarm','75dB + app'],['height','13 mm'],['net','Bluetooth to hub']]},
+ {id:'hub',g:'⬡',c:'power',price:299,
+  en:['Hub','One per home. Keeps every routine running locally when the connection drops.'],
+  ar:['الوحدة المركزية','وحدة واحدة للبيت. تخلي كل الروتينات تشتغل محلياً لو انقطع الاتصال.'],
+  spec:[['devices','Up to 64'],['radios','Wi-Fi, BT, Zigbee'],['local','Runs without internet'],['size','96 × 96 × 24 mm']]}
+];
+const CATS=[{k:'all',en:'All',ar:'الكل'},{k:'climate',en:'Cooling',ar:'التكييف'},{k:'security',en:'Doors & gate',ar:'الأبواب والبوابة'},{k:'lighting',en:'Lighting',ar:'الإضاءة'},{k:'power',en:'Power & safety',ar:'الكهرباء والسلامة'}];
+const PRICES=[{k:'any',en:'Any',ar:'الكل'},{k:'u100',en:'Under 100',ar:'أقل من ١٠٠'},{k:'100-400',en:'100 – 400',ar:'١٠٠ – ٤٠٠'},{k:'o400',en:'Over 400',ar:'أكثر من ٤٠٠'}];
+const CATNAME={climate:{en:'COOLING',ar:'التكييف'},security:{en:'DOORS & GATE',ar:'الأبواب والبوابة'},lighting:{en:'LIGHTING',ar:'الإضاءة'},power:{en:'POWER & SAFETY',ar:'الكهرباء والسلامة'}};
+const FLAG={pop:{en:'MOST ORDERED',ar:'الأكثر طلباً'},low:{en:'LOW STOCK',ar:'كمية محدودة'}};
+const SPECLAB={compat:{en:'Works with',ar:'يتوافق مع'},sensor:{en:'Sensor',ar:'الحساس'},net:{en:'Connectivity',ar:'الاتصال'},size:{en:'Size',ar:'المقاس'},wiring:{en:'Wiring',ar:'التمديدات'},display:{en:'Display',ar:'الشاشة'},fits:{en:'Fits',ar:'يركّب على'},install:{en:'Installation',ar:'التركيب'},accuracy:{en:'Accuracy',ar:'الدقة'},battery:{en:'Battery',ar:'البطارية'},unlock:{en:'Unlock',ar:'طرق الفتح'},door:{en:'Door thickness',ar:'سماكة الباب'},body:{en:'Body',ar:'الجسم'},relay:{en:'Relay',ar:'الريلاي'},camera:{en:'Camera',ar:'الكاميرا'},night:{en:'Night vision',ar:'الرؤية الليلية'},power:{en:'Power',ar:'الطاقة'},neutral:{en:'Neutral wire',ar:'سلك النيوترال'},load:{en:'Load',ar:'الحمل'},manual:{en:'Manual use',ar:'يدوياً'},rating:{en:'Rating',ar:'التحمّل'},metering:{en:'Metering',ar:'قياس الاستهلاك'},offline:{en:'Offline',ar:'بدون نت'},cert:{en:'Certification',ar:'الشهادة'},alarm:{en:'Alarm',ar:'التنبيه'},height:{en:'Height',ar:'الارتفاع'},devices:{en:'Devices',ar:'عدد الأجهزة'},radios:{en:'Radios',ar:'الاتصالات'},local:{en:'Local control',ar:'التحكم المحلي'},range:{en:'Range',ar:'المدى'}};
+
+/* ---------- state + tracking ---------- */
+let lang='en',cat=new URLSearchParams(location.search).get('c')||'all',pr='any',openId=null,activeId=null;
+const stats={};CATALOG.forEach(p=>stats[p.id]={seen:0,open:0,want:0});
+const seenOnce=new Set(),reserved=new Set();
+const started=Date.now();
+window.dataLayer=window.dataLayer||[];
+const src=new URLSearchParams(location.search).get('utm_source')||'direct';
+document.getElementById('srcLine').textContent='source: '+src;
+
+function track(name,pid,extra){
+ const payload={event:name,product:pid||null,source:src,t:Math.round((Date.now()-started)/1000),detail:extra||null};
+ window.dataLayer.push(payload);
+ if(ENDPOINT){
+  try{fetch(ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(payload)});}catch(e){}
+ }
+ const r=document.createElement('div');
+ r.innerHTML='<span class="t">'+payload.t+'s</span><span class="e">'+name+(pid?' <span style="color:var(--slate)">'+pid+'</span>':'')+'</span>';
+ document.getElementById('log').prepend(r);
+ drawBoard();
+}
+function drawBoard(){
+ const rows=CATALOG.map(p=>{
+  const s=stats[p.id];return{id:p.id,n:p[lang][0],s:s.seen,o:s.open,w:s.want,score:s.seen+s.open*4+s.want*20};
+ }).sort((a,b)=>b.score-a.score);
+ const max=Math.max(1,rows[0].score);
+ document.getElementById('board').innerHTML=rows.map((r,i)=>
+  '<div class="lb-row'+(i===0&&r.score>0?' top':'')+'"><span class="nm">'+r.n+'</span>'+
+  '<span>'+r.s+'</span><span>'+r.o+'</span><span class="w">'+r.w+'</span>'+
+  '<span class="bar" style="width:'+(r.score/max*100)+'%"></span></div>').join('');
+}
+
+/* impressions */
+const io=new IntersectionObserver(es=>{
+ es.forEach(e=>{
+  if(e.isIntersecting){
+   const id=e.target.dataset.id;
+   if(!seenOnce.has(id)){seenOnce.add(id);stats[id].seen++;track('product_seen',id);}
+  }});
+},{threshold:.6});
+
+const inPrice=p=>pr==='any'||(pr==='u100'&&p<100)||(pr==='100-400'&&p>=100&&p<=400)||(pr==='o400'&&p>400);
+const T=o=>lang==='ar'?o.ar:o.en;
+
+function render(){
+ const L=lang;
+ document.getElementById('crumb').textContent=L==='ar'?'الرئيسية / المنتجات':'HOME / PRODUCTS';
+ document.getElementById('catChips').innerHTML=CATS.map(c=>'<button class="chip" data-c="'+c.k+'" aria-pressed="'+(c.k===cat)+'">'+c[L]+'</button>').join('');
+ document.getElementById('priceChips').innerHTML=PRICES.map(c=>'<button class="chip" data-p="'+c.k+'" aria-pressed="'+(c.k===pr)+'">'+c[L]+'</button>').join('');
+
+ const list=CATALOG.filter(p=>(cat==='all'||p.c===cat)&&inPrice(p.price));
+ document.getElementById('count').textContent=list.length+(L==='ar'?' منتج':' items');
+
+ document.getElementById('grid').innerHTML=list.map(p=>{
+  const open=openId===p.id, done=reserved.has(p.id);
+  return '<div class="pcard'+(open?' open':'')+'" data-id="'+p.id+'">'+
+   (p.flag?'<span class="flag '+p.flag+'">'+FLAG[p.flag][L]+'</span>':'')+
+   '<span class="g">'+p.g+'</span><span class="cat">'+CATNAME[p.c][L]+'</span>'+
+   '<h3>'+p[L][0]+'</h3><p>'+p[L][1]+'</p>'+
+   '<div class="prow"><span class="price">'+p.price+' SAR'+(p.was?'<s>'+p.was+'</s>':'')+'</span>'+
+   '<button class="expand" data-x="'+p.id+'">'+(open?(L==='ar'?'إخفاء ▲':'Hide ▲'):(L==='ar'?'التفاصيل ▼':'Details ▼'))+'</button></div>'+
+   (open?'<div class="detail"><dl>'+p.spec.map(s=>
+     '<div><dt>'+(SPECLAB[s[0]]?SPECLAB[s[0]][L]:s[0])+'</dt><dd>'+s[1]+'</dd></div>').join('')+'</dl>'+
+    '<div class="acts">'+
+    '<button class="want'+(done?' done':'')+'" data-w="'+p.id+'">'+
+      (done?(L==='ar'?'✓ محجوز':'✓ Reserved'):(L==='ar'?'احجز واحد':'Reserve one'))+'</button>'+
+    '<a class="more" href="'+SLUG[p.id]+'" data-m="'+p.id+'">'+(L==='ar'?'الصفحة الكاملة':'Full page')+'</a>'+
+    '</div></div>':'')+
+  '</div>';
+ }).join('');
+
+ const emp=document.getElementById('empty');
+ if(!list.length){emp.classList.remove('hidden');emp.textContent=L==='ar'?'ما في شي بهالفلتر. جرّب سعر أوسع.':'Nothing in that range. Try a wider price filter.';}
+ else emp.classList.add('hidden');
+
+ document.querySelectorAll('.pcard').forEach(c=>io.observe(c));
+
+ /* modal copy */
+ document.getElementById('mBody').textContent=L==='ar'
+  ?'ننتج على دفعات. سجّل اسمك ورقمك ونحجزها لك بسعر التجربة — ما ينخصم منك شي الآن.'
+  :'We build in runs. Leave your name and number and we hold one at the pilot price — nothing is charged now.';
+ document.getElementById('mName').placeholder=L==='ar'?'الاسم':'Name';
+ document.getElementById('mSubmit').textContent=L==='ar'?'احجزها لي':'Hold it for me';
+ document.getElementById('mClose').textContent=L==='ar'?'إلغاء':'Cancel';
+ document.getElementById('okHead').textContent=L==='ar'?'محجوزة لك':'Held for you';
+ document.getElementById('okBody').textContent=L==='ar'
+  ?'بنتصل خلال يومين عمل. بدون دفع لين نتكلم.'
+  :"We'll call within two working days. No payment until we speak.";
+ document.getElementById('okClose').textContent=L==='ar'?'إغلاق':'Close';
+ document.getElementById('mWhen').innerHTML=(L==='ar'
+  ?['أبيه هالأسبوع','خلال شهر','أقارن حالياً فقط']
+  :["I want it this week",'Within a month','Just comparing for now']).map(o=>'<option>'+o+'</option>').join('');
+
+ drawBoard();
+}
+
+/* interactions */
+document.addEventListener('click',e=>{
+ const ex=e.target.closest('[data-x]');
+ if(ex){const id=ex.dataset.x;
+  if(openId===id){openId=null;}else{openId=id;stats[id].open++;track('product_opened',id);}
+  render();return;}
+ const w=e.target.closest('[data-w]');
+ if(w){const id=w.dataset.w;
+  if(reserved.has(id))return;
+  activeId=id;
+  const p=CATALOG.find(x=>x.id===id);
+  document.getElementById('mHead').textContent=p[lang][0];
+  document.getElementById('formView').classList.remove('hidden');
+  document.getElementById('okView').classList.add('hidden');
+  document.getElementById('overlay').classList.add('show');
+  track('reserve_opened',id);return;}
+ const m=e.target.closest('[data-m]');
+ if(m){track('to_full_page',m.dataset.m);return;}
+ const cc=e.target.closest('[data-c]');
+ if(cc){cat=cc.dataset.c;track('filter_room',null,cat);render();return;}
+ const pc=e.target.closest('[data-p]');
+ if(pc){pr=pc.dataset.p;track('filter_price',null,pr);render();return;}
+});
+
+document.getElementById('mSubmit').addEventListener('click',()=>{
+ const n=document.getElementById('mName').value.trim();
+ const ph=document.getElementById('mPhone').value.trim();
+ if(!n||ph.length<9){alert(lang==='ar'?'اكتب اسمك ورقمك.':'Add your name and number.');
+  track('reserve_invalid',activeId);return;}
+ reserved.add(activeId);stats[activeId].want++;
+ track('reserved',activeId,document.getElementById('mWhen').value);
+ document.getElementById('formView').classList.add('hidden');
+ document.getElementById('okView').classList.remove('hidden');
+ render();
+});
+document.getElementById('mClose').addEventListener('click',()=>{
+ track('reserve_abandoned',activeId);
+ document.getElementById('overlay').classList.remove('show');});
+document.getElementById('okClose').addEventListener('click',()=>document.getElementById('overlay').classList.remove('show'));
+document.getElementById('overlay').addEventListener('click',e=>{
+ if(e.target.id==='overlay')document.getElementById('overlay').classList.remove('show');});
+
+document.getElementById('langBtn').addEventListener('click',()=>{
+ lang=lang==='en'?'ar':'en';
+ document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';
+ document.getElementById('langBtn').textContent=lang==='ar'?'English':'العربية';
+ document.querySelectorAll('[data-en]').forEach(el=>el.innerHTML=el.dataset[lang]);
+ render();track('lang_switch',null,lang);});
+document.getElementById('panelBtn').addEventListener('click',()=>document.getElementById('panel').classList.add('open'));
+document.getElementById('closePanel').addEventListener('click',()=>document.getElementById('panel').classList.remove('open'));
+
+render();track('page_view',null,cat);
+</script>
+</body>
+</html>

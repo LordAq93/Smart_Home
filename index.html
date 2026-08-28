@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bayt Control — smart AC, lights and locks for Riyadh homes</title>
+<meta name="description" content="Retrofit smart home kit for Riyadh villas and apartments. Fits the AC, lights and locks you already own. Installed in one visit.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--petrol:#0E2A2B;--deep:#071A1B;--cool:#4FB8A8;--cool-dim:#2E7A70;--mist:#E8F1EE;--slate:#7E9895;--amber:#E8A33D;--line:rgba(232,241,238,.14);
+--display:'Bricolage Grotesque','Trebuchet MS',system-ui,sans-serif;--body:'IBM Plex Sans Arabic',system-ui,-apple-system,sans-serif;--mono:'IBM Plex Mono',ui-monospace,monospace}
+html[dir=rtl] h1,html[dir=rtl] h2,html[dir=rtl] h3,html[dir=rtl] .brand{font-family:var(--body);font-weight:600;letter-spacing:0}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--petrol);color:var(--mist);font-family:var(--body);font-weight:300;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{max-width:1140px;margin:0 auto;padding:0 24px}
+h1,h2,h3{font-family:var(--display);font-weight:800;line-height:1.03;letter-spacing:-.035em}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+:focus-visible{outline:2px solid var(--cool);outline-offset:3px;border-radius:3px}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--cool);display:flex;align-items:center;gap:10px}
+.eyebrow::before{content:"";width:26px;height:1px;background:var(--cool-dim)}
+html[dir=rtl] .eyebrow{letter-spacing:0}
+.nav{position:sticky;top:0;z-index:60;background:rgba(14,42,43,.85);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:64px;gap:20px}
+.brand{font-family:var(--display);font-weight:800;font-size:19px;letter-spacing:-.04em}
+.brand span{color:var(--cool)}
+.links{display:flex;gap:26px;font-size:14.5px;color:var(--slate)}
+.links a:hover,.links a.on{color:var(--mist)}
+.nav-right{display:flex;align-items:center;gap:14px}
+.lang{font-family:var(--mono);font-size:12px;border:1px solid var(--line);padding:7px 13px;border-radius:999px;color:var(--slate)}
+.lang:hover{color:var(--mist)}
+.nav-cta{background:var(--cool);color:var(--deep);font-weight:500;font-size:14px;padding:10px 18px;border-radius:999px}
+.nav-cta:hover{background:var(--mist)}
+@media(max-width:860px){.links{display:none}}
+.hero{padding:76px 0 40px}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
+.hero h1{font-size:clamp(36px,5.4vw,66px);margin:22px 0 20px}
+.hero h1 em{font-style:normal;color:var(--cool)}
+.lede{color:var(--slate);font-size:19px;max-width:44ch}
+.hero-note{margin-top:26px;font-family:var(--mono);font-size:12px;color:var(--slate);border-inline-start:2px solid var(--cool-dim);padding-inline-start:14px;line-height:1.8}
+.dial{background:var(--deep);border:1px solid var(--line);border-radius:20px;padding:28px}
+.dial-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:20px}
+.dial-label{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--slate)}
+html[dir=rtl] .dial-label{letter-spacing:0}
+.readout{display:flex;align-items:flex-end;gap:10px}
+.amount{font-family:var(--mono);font-weight:500;font-size:clamp(42px,6.6vw,60px);line-height:1;letter-spacing:-.03em;font-variant-numeric:tabular-nums;color:var(--cool)}
+.amount.hot{color:var(--amber)}
+.riyal{font-family:var(--mono);font-size:15px;color:var(--slate);padding-bottom:8px}
+.sub-read{font-size:14px;color:var(--slate);margin:6px 0 24px}
+.sub-read b{color:var(--cool);font-weight:500}
+.temp-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.temp-val{font-family:var(--mono);font-size:23px;font-variant-numeric:tabular-nums}
+.tlabel{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--slate)}
+html[dir=rtl] .tlabel{letter-spacing:0}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:3px;background:linear-gradient(90deg,var(--cool),var(--amber));border-radius:2px;outline:none}
+html[dir=rtl] input[type=range]{background:linear-gradient(270deg,var(--cool),var(--amber))}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:var(--mist);border:5px solid var(--deep);box-shadow:0 0 0 1px var(--line)}
+input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;background:var(--mist);border:5px solid var(--deep)}
+.scale{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--slate);margin-top:10px}
+.seg{display:flex;gap:6px;margin:22px 0 18px;background:rgba(232,241,238,.05);padding:5px;border-radius:12px}
+.seg button{flex:1;font-size:13px;padding:9px 6px;border-radius:8px;color:var(--slate)}
+.seg button[aria-pressed=true]{background:var(--cool);color:var(--deep);font-weight:500}
+.disclaim{font-family:var(--mono);font-size:10.5px;color:var(--slate);line-height:1.7;opacity:.8}
+section{padding:84px 0;border-top:1px solid var(--line)}
+.sec-head{max-width:56ch;margin-bottom:46px}
+.sec-head h2{font-size:clamp(28px,3.6vw,42px);margin:16px 0 14px}
+.sec-head p{color:var(--slate)}
+.cats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.cat{background:var(--petrol);padding:30px 24px;text-align:start;transition:background .25s;display:block}
+.cat:hover{background:var(--deep)}
+.cat .g{font-size:24px;color:var(--cool);display:block;margin-bottom:16px}
+.cat h3{font-size:19px;margin-bottom:8px;letter-spacing:-.02em}
+.cat p{font-size:14px;color:var(--slate)}
+.cat .c{font-family:var(--mono);font-size:11px;color:var(--cool-dim);margin-top:14px;display:block}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.pcard{background:var(--deep);border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:9px;transition:border-color .2s,transform .2s}
+.pcard:hover{border-color:var(--cool-dim);transform:translateY(-3px)}
+.pcard .g{font-size:24px;color:var(--cool)}
+.pcard h3{font-size:17px;letter-spacing:-.01em}
+.pcard p{font-size:14px;color:var(--slate);flex:1}
+.prow{display:flex;justify-content:space-between;align-items:baseline;margin-top:6px}
+.price{font-family:var(--mono);font-size:16px;color:var(--cool);font-variant-numeric:tabular-nums}
+.arrow{font-family:var(--mono);font-size:12px;color:var(--slate)}
+.allbtn{display:inline-block;margin-top:30px;border:1px solid var(--line);border-radius:999px;padding:13px 26px;font-size:15px}
+.allbtn:hover{border-color:var(--cool-dim)}
+.scen{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.card{background:var(--petrol);padding:32px 26px;text-align:start;transition:background .25s}
+.card:hover{background:var(--deep)}
+.card .tick{font-family:var(--mono);font-size:11px;color:var(--cool);letter-spacing:.1em;margin-bottom:18px;display:block}
+.card h3{font-size:21px;margin-bottom:11px;letter-spacing:-.02em}
+.card p{font-size:15px;color:var(--slate)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:34px}
+.step .n{font-family:var(--mono);font-size:12px;color:var(--cool);display:block;margin-bottom:14px}
+.step h3{font-size:19px;margin-bottom:9px}
+.step p{font-size:15px;color:var(--slate)}
+.cta{background:var(--deep);border:1px solid var(--line);border-radius:22px;padding:54px 44px;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center}
+.cta h2{font-size:clamp(26px,3.2vw,36px);margin-bottom:12px}
+.cta p{color:var(--slate);max-width:46ch}
+.cta a{background:var(--cool);color:var(--deep);font-weight:600;padding:16px 30px;border-radius:12px;white-space:nowrap}
+footer{padding:44px 0;border-top:1px solid var(--line);font-family:var(--mono);font-size:12px;color:var(--slate);display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.panel-btn{position:fixed;inset-block-end:20px;inset-inline-end:20px;z-index:90;background:var(--amber);color:var(--deep);font-family:var(--mono);font-size:12px;font-weight:500;padding:11px 17px;border-radius:999px;box-shadow:0 8px 26px rgba(0,0,0,.45)}
+.panel{position:fixed;inset-block:0;inset-inline-end:0;width:min(360px,100%);z-index:95;background:var(--deep);border-inline-start:1px solid var(--line);transform:translateX(105%);transition:transform .3s;display:flex;flex-direction:column}
+html[dir=rtl] .panel{transform:translateX(-105%)}
+.panel.open{transform:translateX(0)}
+.panel-head{padding:20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;font-family:var(--mono);font-size:13px}
+.panel-body{padding:20px;overflow-y:auto;flex:1}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:20px}
+.stat{background:var(--deep);padding:15px}
+.stat .k{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--slate)}
+.stat .v{font-family:var(--mono);font-size:22px;color:var(--cool);margin-top:5px}
+.log{font-family:var(--mono);font-size:11.5px}
+.log div{display:flex;gap:9px;padding:6px 0;border-bottom:1px solid rgba(232,241,238,.07);color:var(--slate)}
+.log .t{color:var(--cool-dim)}
+.log .e{color:var(--mist)}
+.panel-foot{padding:16px 20px;border-top:1px solid var(--line);font-family:var(--mono);font-size:10.5px;color:var(--slate);line-height:1.75}
+@media(max-width:960px){.cats{grid-template-columns:1fr 1fr}}
+@media(max-width:860px){.hero-grid{grid-template-columns:1fr;gap:40px}.grid,.scen,.steps{grid-template-columns:1fr}.cta{grid-template-columns:1fr}section{padding:60px 0}.hero{padding:48px 0 30px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="wrap nav-in">
+  <a class="brand" href="index.html">Bayt<span>·</span>Control</a>
+  <div class="links">
+    <a href="index.html" class="on" data-en="Home" data-ar="الرئيسية">Home</a>
+    <a href="products.html" data-en="Products" data-ar="المنتجات">Products</a>
+    <a href="#how" data-en="How it works" data-ar="كيف يشتغل">How it works</a>
+    <a href="#install" data-en="Installation" data-ar="التركيب">Installation</a>
+  </div>
+  <div class="nav-right">
+    <button class="lang" id="langBtn">العربية</button>
+    <a class="nav-cta" href="products.html" data-ev="nav_cta" data-en="Shop the kit" data-ar="تسوّق">Shop the kit</a>
+  </div>
+</div></nav>
+
+<header class="hero"><div class="wrap hero-grid">
+  <div>
+    <div class="eyebrow" data-en="Riyadh · pilot batch" data-ar="الرياض · الدفعة التجريبية">Riyadh · pilot batch</div>
+    <h1 data-en="Your AC decides your bill. Right now, <em>nothing</em> decides your AC." data-ar="المكيّف هو اللي يحدد فاتورتك. وحالياً <em>ما في شي</em> يحدد المكيّف.">Your AC decides your bill. Right now, <em>nothing</em> decides your AC.</h1>
+    <p class="lede" data-en="Bayt Control fits onto the split units, lights and locks you already own. No rewiring, no new AC. Set it once in May and it runs the rest of the summer." data-ar="بيت كنترول يتركّب على المكيفات والإضاءة والأقفال الموجودة عندك. بدون تمديدات جديدة وبدون تغيير المكيف. تضبطه مرة وحدة في مايو ويشتغل باقي الصيف.">Bayt Control fits onto the split units, lights and locks you already own. No rewiring, no new AC. Set it once in May and it runs the rest of the summer.</p>
+    <div class="hero-note" data-en="Move the dial →<br>See what one degree is worth in July." data-ar="حرّك المؤشر ←<br>شوف كم تسوى درجة وحدة في يوليو.">Move the dial →<br>See what one degree is worth in July.</div>
+  </div>
+  <div class="dial">
+    <div class="dial-head">
+      <span class="dial-label" data-en="Estimated July bill" data-ar="الفاتورة التقديرية ليوليو">Estimated July bill</span>
+      <span class="dial-label" id="homeLabel">Small villa</span>
+    </div>
+    <div class="readout"><span class="amount hot" id="amount">1,842</span><span class="riyal">SAR</span></div>
+    <p class="sub-read" id="saving"></p>
+    <div class="temp-row"><span class="tlabel" data-en="AC setpoint" data-ar="درجة المكيّف">AC setpoint</span><span class="temp-val"><span id="tempVal">20</span>°C</span></div>
+    <input type="range" id="temp" min="18" max="26" step="1" value="20" aria-label="AC setpoint">
+    <div class="scale"><span>18°</span><span data-en="cooler · costlier" data-ar="أبرد · أغلى">cooler · costlier</span><span>26°</span></div>
+    <div class="seg">
+      <button data-home="apt" aria-pressed="false" data-en="Apartment" data-ar="شقة">Apartment</button>
+      <button data-home="small" aria-pressed="true" data-en="Small villa" data-ar="فيلا صغيرة">Small villa</button>
+      <button data-home="large" aria-pressed="false" data-en="Large villa" data-ar="فيلا كبيرة">Large villa</button>
+    </div>
+    <p class="disclaim" data-en="Estimate only. Assumes SEC residential tariff of 18 halalas/kWh to 6,000 kWh and 30 above, cooling at roughly 70% of summer load, and about 6% energy change per degree." data-ar="تقدير تقريبي. مبني على تعرفة السعودية للكهرباء ١٨ هللة/ك.و.س حتى ٦٠٠٠ و٣٠ هللة بعدها، والتكييف حوالي ٧٠٪ من استهلاك الصيف، وتغيّر ٦٪ لكل درجة.">Estimate only. Assumes SEC residential tariff of 18 halalas/kWh to 6,000 kWh and 30 above, cooling at roughly 70% of summer load, and about 6% energy change per degree.</p>
+  </div>
+</div></header>
+
+<section><div class="wrap">
+  <div class="sec-head">
+    <div class="eyebrow" data-en="Where to start" data-ar="من وين تبدأ">Where to start</div>
+    <h2 data-en="Four rooms' worth of problems" data-ar="مشاكل أربع مناطق في البيت">Four rooms' worth of problems</h2>
+  </div>
+  <div class="cats">
+    <a class="cat" href="products.html?c=climate" data-ev="cat_climate"><span class="g">❄</span><h3 data-en="Cooling" data-ar="التكييف">Cooling</h3><p data-en="Control the split units you already have, room by room." data-ar="تحكّم بالمكيفات الموجودة عندك، غرفة غرفة.">Control the split units you already have, room by room.</p><span class="c" data-en="3 products" data-ar="٣ منتجات">3 products</span></a>
+    <a class="cat" href="products.html?c=security" data-ev="cat_security"><span class="g">⌘</span><h3 data-en="Doors & gate" data-ar="الأبواب والبوابة">Doors &amp; gate</h3><p data-en="Locks, gate control and video at the front door." data-ar="أقفال وتحكم بالبوابة وكاميرا عند الباب.">Locks, gate control and video at the front door.</p><span class="c" data-en="3 products" data-ar="٣ منتجات">3 products</span></a>
+    <a class="cat" href="products.html?c=lighting" data-ev="cat_lighting"><span class="g">◫</span><h3 data-en="Lighting" data-ar="الإضاءة">Lighting</h3><p data-en="Switches that replace the plate, not the wiring." data-ar="مفاتيح تستبدل الغطاء، مو التمديدات.">Switches that replace the plate, not the wiring.</p><span class="c" data-en="2 products" data-ar="منتجان">2 products</span></a>
+    <a class="cat" href="products.html?c=power" data-ev="cat_power"><span class="g">◈</span><h3 data-en="Power & safety" data-ar="الكهرباء والسلامة">Power &amp; safety</h3><p data-en="Metered plugs and sensors that catch leaks early." data-ar="أفياش بعدّاد وحساسات تكشف التسريب بدري.">Metered plugs and sensors that catch leaks early.</p><span class="c" data-en="3 products" data-ar="٣ منتجات">3 products</span></a>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="sec-head">
+    <div class="eyebrow" data-en="Most ordered" data-ar="الأكثر طلباً">Most ordered</div>
+    <h2 data-en="Start with one of these" data-ar="ابدأ بواحد من هذي">Start with one of these</h2>
+    <p data-en="Every piece runs on the same hub, so adding the next one later costs nothing extra in setup." data-ar="كل قطعة تشتغل على نفس الوحدة المركزية، فإضافة القطعة الجاية ما تكلفك إعداد إضافي.">Every piece runs on the same hub, so adding the next one later costs nothing extra in setup.</p>
+  </div>
+  <div class="grid" id="featured"></div>
+  <a class="allbtn" href="products.html" data-ev="see_all" data-en="See all 11 products →" data-ar="شوف كل ١١ منتج ←">See all 11 products →</a>
+</div></section>
+
+<section id="how"><div class="wrap">
+  <div class="sec-head">
+    <div class="eyebrow" data-en="Three routines that do the work" data-ar="ثلاثة روتينات تسوي الشغل">Three routines that do the work</div>
+    <h2 data-en="Built for how the house is actually used" data-ar="مصمّم على طريقة استخدام البيت فعلياً">Built for how the house is actually used</h2>
+    <p data-en="Not scenes you have to remember to trigger. Routines tied to the clock, the calendar and the front door." data-ar="مو مشاهد لازم تتذكر تشغّلها. روتينات مربوطة بالوقت والتقويم وباب البيت.">Not scenes you have to remember to trigger. Routines tied to the clock, the calendar and the front door.</p>
+  </div>
+  <div class="scen">
+    <div class="card"><span class="tick">04:31 → 18:52</span><h3 data-en="Prayer times, without an alarm" data-ar="أوقات الصلاة، بدون منبّه">Prayer times, without an alarm</h3><p data-en="Hallway and majlis lights rise fifteen minutes before Fajr and again at Maghrib. Times follow Umm al-Qura for your district and shift with the calendar on their own." data-ar="إضاءة الممر والمجلس ترتفع قبل الفجر بربع ساعة وكذلك عند المغرب. الأوقات حسب أم القرى لحيّك وتتغيّر مع التقويم تلقائياً.">Hallway and majlis lights rise fifteen minutes before Fajr and again at Maghrib. Times follow Umm al-Qura for your district and shift with the calendar on their own.</p></div>
+    <div class="card"><span class="tick" data-en="GUESTS ARRIVING" data-ar="ضيوف على الباب">GUESTS ARRIVING</span><h3 data-en="One tap before the guests" data-ar="ضغطة وحدة قبل الضيوف">One tap before the guests</h3><p data-en="Majlis down to 19°C twenty minutes ahead, lights warm, the rest of the house untouched. The room is cold when they sit, not an hour later." data-ar="المجلس ينزل لـ١٩ درجة قبلهم بعشرين دقيقة، والإضاءة دافية، وباقي البيت ما يتأثر. الغرفة باردة لما يجلسون، مو بعد ساعة.">Majlis down to 19°C twenty minutes ahead, lights warm, the rest of the house untouched. The room is cold when they sit, not an hour later.</p></div>
+    <div class="card"><span class="tick" data-en="JUN — AUG" data-ar="يونيو — أغسطس">JUN — AUG</span><h3 data-en="Away for the summer" data-ar="مسافرين الصيف">Away for the summer</h3><p data-en="Hold the house at 28°C instead of off, so it does not cook. Leak sensors under the kitchen and bathrooms message you before the neighbour does." data-ar="يثبّت البيت على ٢٨ درجة بدل الإطفاء، عشان ما ينحرق. وحساسات التسريب ترسل لك قبل ما يتصل الجار.">Hold the house at 28°C instead of off, so it does not cook. Leak sensors under the kitchen and bathrooms message you before the neighbour does.</p></div>
+  </div>
+</div></section>
+
+<section id="install"><div class="wrap">
+  <div class="sec-head">
+    <div class="eyebrow" data-en="Installation" data-ar="التركيب">Installation</div>
+    <h2 data-en="One visit, 250 SAR, no walls opened" data-ar="زيارة واحدة، ٢٥٠ ريال، بدون فتح جدران">One visit, 250 SAR, no walls opened</h2>
+  </div>
+  <div class="steps">
+    <div class="step"><span class="n">01</span><h3 data-en="A call first" data-ar="مكالمة أولاً">A call first</h3><p data-en="Someone walks the house with you over the phone and tells you what you actually need — often less than you ordered." data-ar="واحد من الفريق يمشي معك على البيت بالمكالمة ويقول لك وش تحتاج فعلاً — غالباً أقل مما طلبت.">Someone walks the house with you over the phone and tells you what you actually need — often less than you ordered.</p></div>
+    <div class="step"><span class="n">02</span><h3 data-en="Two to three hours" data-ar="ساعتين لثلاث">Two to three hours</h3><p data-en="A technician fits everything, sets your routines with you and shows the family how to use it before leaving." data-ar="الفني يركّب كل شي، ويضبط الروتينات معك، ويعلّم أهل البيت كيف يستخدمونه قبل ما يمشي.">A technician fits everything, sets your routines with you and shows the family how to use it before leaving.</p></div>
+    <div class="step"><span class="n">03</span><h3 data-en="Take it with you" data-ar="ينتقل معك">Take it with you</h3><p data-en="Everything unclips if you move. Fourteen days to return it if it changes nothing." data-ar="كل شي يفك لو انتقلت. وأربعة عشر يوم للإرجاع لو ما غيّر شي.">Everything unclips if you move. Fourteen days to return it if it changes nothing.</p></div>
+  </div>
+</div></section>
+
+<section style="border:none"><div class="wrap"><div class="cta">
+  <div>
+    <h2 data-en="Pilot batch — first 50 homes in Riyadh" data-ar="الدفعة التجريبية — أول ٥٠ بيت في الرياض">Pilot batch — first 50 homes in Riyadh</h2>
+    <p data-en="Pilot pricing, and we call before anything ships. No payment until the technician is at your door." data-ar="أسعار التجربة، ونتصل قبل ما نشحن أي شي. بدون دفع لين يوصل الفني لباب بيتك.">Pilot pricing, and we call before anything ships. No payment until the technician is at your door.</p>
+  </div>
+  <a href="products.html" data-ev="cta_bottom" data-en="Browse products" data-ar="تصفّح المنتجات">Browse products</a>
+</div></div></section>
+
+<div class="wrap"><footer>
+  <span>Bayt Control · Riyadh</span>
+  <span id="srcLine">source: direct</span>
+</footer></div>
+
+<button class="panel-btn" id="panelBtn">◉ TEST</button>
+<aside class="panel" id="panel">
+  <div class="panel-head"><span>HOME — SESSION</span><button id="closePanel" style="color:var(--slate)">✕</button></div>
+  <div class="panel-body">
+    <div class="stat-grid">
+      <div class="stat"><div class="k">Events</div><div class="v" id="sEvents">0</div></div>
+      <div class="stat"><div class="k">Time</div><div class="v" id="sTime">0s</div></div>
+      <div class="stat"><div class="k">Scroll</div><div class="v" id="sScroll">0%</div></div>
+      <div class="stat"><div class="k">To shop</div><div class="v" id="sShop">no</div></div>
+    </div>
+    <div class="log" id="log"></div>
+  </div>
+  <div class="panel-foot">Remove before running traffic. Events push to <b>window.dataLayer</b>. The number to watch here is <b>home → products</b> click-through.</div>
+</aside>
+
+<script>
+const SLUG={ac:'smart-ac-controller.html',thermo:'zone-thermostat.html',temp:'room-temperature-sensor.html',lock:'smart-door-lock.html',gate:'gate-controller.html',intercom:'video-intercom.html',switch:'smart-wall-switch.html',dimmer:'dimmer-switch.html',plug:'smart-plug-16a.html',leak:'water-leak-sensor.html',hub:'smart-home-hub.html'};
+const CATALOG=[
+ {id:'ac',g:'❄',c:'climate',price:349,en:['AC controller','Learns any split-unit remote. Reads room temperature itself.'],ar:['متحكّم المكيّف','يتعلّم ريموت أي مكيّف سبليت ويقرأ حرارة الغرفة بنفسه.']},
+ {id:'lock',g:'⌘',c:'security',price:500,en:['Smart door lock','Fingerprint, code, phone or the original key.'],ar:['قفل الباب الذكي','بصمة أو رمز أو جوال أو المفتاح الأصلي.']},
+ {id:'plug',g:'◈',c:'power',price:89,en:['Smart plug 16A','Switches from your phone and counts every watt behind it.'],ar:['فيشة ذكية ١٦ أمبير','تتحكم فيها من جوالك وتحسب كل واط خلفها.']},
+ {id:'gate',g:'⊟',c:'security',price:449,en:['Gate controller','Open the villa gate from the car, or on arrival.'],ar:['متحكّم البوابة','افتح بوابة الفيلا من السيارة أو عند الوصول.']},
+ {id:'switch',g:'◫',c:'lighting',price:189,en:['Wall switch, 3 gang','Replaces the plate. Still works by hand if the internet drops.'],ar:['مفتاح جداري ٣ أزرار','يستبدل الغطاء. ويشتغل باليد لو انقطع النت.']},
+ {id:'leak',g:'◌',c:'power',price:79,en:['Water leak sensor','Sits flat under the sink. Alerts on the first drop.'],ar:['حساس تسريب المياه','يوضع تحت المغسلة. ينبّهك من أول قطرة.']}
+];
+
+const started=Date.now();let events=0,maxScroll=0,lang='en';
+window.dataLayer=window.dataLayer||[];
+function track(n,d){events++;const t=((Date.now()-started)/1000).toFixed(1)+'s';
+ window.dataLayer.push({event:n,detail:d||null,page:'home'});
+ const r=document.createElement('div');
+ r.innerHTML='<span class="t">'+t+'</span><span class="e">'+n+(d?' <span style="color:var(--slate)">'+d+'</span>':'')+'</span>';
+ document.getElementById('log').prepend(r);document.getElementById('sEvents').textContent=events;}
+const src=new URLSearchParams(location.search).get('utm_source')||'direct';
+document.getElementById('srcLine').textContent='source: '+src;
+track('page_view',src);
+let ticking=false;
+addEventListener('scroll',()=>{if(ticking)return;ticking=true;requestAnimationFrame(()=>{
+ const d=Math.min(100,Math.round((scrollY+innerHeight)/document.body.scrollHeight*100));
+ if(d>maxScroll){maxScroll=d;document.getElementById('sScroll').textContent=d+'%';
+ if([25,50,75,100].includes(d))track('scroll_'+d);}ticking=false;});});
+setInterval(()=>document.getElementById('sTime').textContent=Math.round((Date.now()-started)/1000)+'s',1000);
+document.addEventListener('click',e=>{const el=e.target.closest('[data-ev]');if(!el)return;
+ track(el.dataset.ev);
+ if(el.getAttribute('href')&&el.getAttribute('href').indexOf('product')===0)document.getElementById('sShop').textContent='yes';});
+
+function renderFeatured(){
+ document.getElementById('featured').innerHTML=CATALOG.map(p=>
+  '<a class="pcard" href="'+SLUG[p.id]+'" data-ev="product_'+p.id+'"><span class="g">'+p.g+'</span>'+
+  '<h3>'+p[lang][0]+'</h3><p>'+p[lang][1]+'</p>'+
+  '<div class="prow"><span class="price">'+p.price+' SAR</span><span class="arrow">→</span></div></a>').join('');
+}
+
+const BASE={apt:2200,small:5200,large:8800};
+const NAMES={apt:{en:'Apartment',ar:'شقة'},small:{en:'Small villa',ar:'فيلا صغيرة'},large:{en:'Large villa',ar:'فيلا كبيرة'}};
+let home='small',temp=20,dialLogged=false;
+const bill=k=>k<=6000?k*0.18:6000*0.18+(k-6000)*0.30;
+const kwhAt=(t,auto)=>{const c=BASE[home]*0.7,o=BASE[home]*0.3;
+ let x=c*Math.pow(0.94,t-21);if(auto)x*=0.88;return x+o;};
+function render(){
+ const now=bill(kwhAt(temp,true)),base=bill(kwhAt(20,false)),diff=Math.round(base-now);
+ const el=document.getElementById('amount');
+ el.textContent=Math.round(now).toLocaleString('en-US');
+ el.className='amount '+(diff>0?'':'hot');
+ document.getElementById('tempVal').textContent=temp;
+ document.getElementById('homeLabel').textContent=NAMES[home][lang];
+ document.getElementById('saving').innerHTML=diff>0
+  ?(lang==='ar'?'أقل بـ <b>'+diff.toLocaleString('en-US')+' ريال</b> من الوضع الحالي عند ٢٠ درجة بدون تحكّم.':'<b>'+diff.toLocaleString('en-US')+' SAR less</b> than holding 20°C with no control.')
+  :(lang==='ar'?'أعلى بـ <b>'+Math.abs(diff).toLocaleString('en-US')+' ريال</b> — أبرد من المرجع.':'<b>'+Math.abs(diff).toLocaleString('en-US')+' SAR more</b> — colder than the baseline.');
+}
+document.getElementById('temp').addEventListener('input',e=>{temp=+e.target.value;render();
+ if(!dialLogged){track('dial_used');dialLogged=true;}});
+document.getElementById('temp').addEventListener('change',()=>track('dial_set',temp+'C'));
+document.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',()=>{
+ document.querySelectorAll('.seg button').forEach(x=>x.setAttribute('aria-pressed','false'));
+ b.setAttribute('aria-pressed','true');home=b.dataset.home;render();track('home_type',home);}));
+
+document.getElementById('langBtn').addEventListener('click',()=>{
+ lang=lang==='en'?'ar':'en';
+ document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';
+ document.getElementById('langBtn').textContent=lang==='ar'?'English':'العربية';
+ document.querySelectorAll('[data-en]').forEach(el=>el.innerHTML=el.dataset[lang]);
+ renderFeatured();render();track('lang_switch',lang);});
+
+document.getElementById('panelBtn').addEventListener('click',()=>document.getElementById('panel').classList.add('open'));
+document.getElementById('closePanel').addEventListener('click',()=>document.getElementById('panel').classList.remove('open'));
+
+renderFeatured();render();
+</script>
+</body>
+</html>

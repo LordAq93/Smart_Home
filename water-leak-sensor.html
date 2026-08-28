@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Water leak sensor — Bayt Control</title>
+<meta name="description" content="Sits flat under the sink. Two-year battery, alerts on the first drop. 79 SAR.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--petrol:#0E2A2B;--deep:#071A1B;--cool:#4FB8A8;--cool-dim:#2E7A70;--mist:#E8F1EE;--slate:#7E9895;--amber:#E8A33D;--line:rgba(232,241,238,.14);
+--display:'Bricolage Grotesque','Trebuchet MS',system-ui,sans-serif;--body:'IBM Plex Sans Arabic',system-ui,-apple-system,sans-serif;--mono:'IBM Plex Mono',ui-monospace,monospace}
+html[dir=rtl] h1,html[dir=rtl] h2,html[dir=rtl] h3,html[dir=rtl] .brand{font-family:var(--body);font-weight:600;letter-spacing:0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--petrol);color:var(--mist);font-family:var(--body);font-weight:300;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;padding-bottom:78px}
+.wrap{max-width:1140px;margin:0 auto;padding:0 24px}
+h1,h2,h3{font-family:var(--display);font-weight:800;line-height:1.04;letter-spacing:-.035em}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+:focus-visible{outline:2px solid var(--cool);outline-offset:3px;border-radius:3px}
+.hidden{display:none!important}
+.nav{position:sticky;top:0;z-index:60;background:rgba(14,42,43,.85);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:64px;gap:20px}
+.brand{font-family:var(--display);font-weight:800;font-size:19px;letter-spacing:-.04em}
+.brand span{color:var(--cool)}
+.links{display:flex;gap:26px;font-size:14.5px;color:var(--slate)}
+.links a:hover,.links a.on{color:var(--mist)}
+.nav-right{display:flex;align-items:center;gap:14px}
+.lang{font-family:var(--mono);font-size:12px;border:1px solid var(--line);padding:7px 13px;border-radius:999px;color:var(--slate)}
+.cartbtn{font-family:var(--mono);font-size:13px;display:flex;align-items:center;gap:7px}
+.badge{background:var(--cool);color:var(--deep);border-radius:999px;min-width:19px;height:19px;font-size:11px;display:grid;place-items:center;font-weight:500}
+@media(max-width:860px){.links{display:none}}
+
+.crumb{font-family:var(--mono);font-size:11.5px;color:var(--slate);padding:26px 0;letter-spacing:.05em}
+html[dir=rtl] .crumb{letter-spacing:0}
+.crumb a:hover{color:var(--mist)}
+.pdp{display:grid;grid-template-columns:1.05fr 1fr;gap:58px;align-items:start;padding-bottom:70px}
+.stage{background:var(--deep);border:1px solid var(--line);border-radius:20px;aspect-ratio:1/1;display:grid;place-items:center;position:relative;overflow:hidden}
+.stage .glyph{font-size:clamp(90px,16vw,150px);color:var(--cool);opacity:.9}
+.ph-tag{position:absolute;inset-block-start:14px;inset-inline-start:14px;font-family:var(--mono);font-size:10px;color:var(--slate);border:1px dashed var(--line);padding:5px 9px;border-radius:6px}
+.thumbs{display:flex;gap:10px;margin-top:12px}
+.thumb{flex:1;aspect-ratio:1/1;background:var(--deep);border:1px solid var(--line);border-radius:11px;display:grid;place-items:center;color:var(--slate);font-family:var(--mono);font-size:10px;transition:.2s}
+.thumb:hover,.thumb[aria-pressed=true]{border-color:var(--cool-dim);color:var(--cool)}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--cool)}
+html[dir=rtl] .eyebrow{letter-spacing:0}
+.pdp h1{font-size:clamp(29px,3.9vw,44px);margin:14px 0 14px}
+.blurb{color:var(--slate);font-size:16.5px;max-width:46ch}
+.pricerow{display:flex;align-items:baseline;gap:12px;margin:26px 0 6px;flex-wrap:wrap}
+.big{font-family:var(--mono);font-weight:500;font-size:36px;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.was{font-family:var(--mono);font-size:16px;color:var(--slate);text-decoration:line-through}
+.tag{background:rgba(232,163,61,.15);color:var(--amber);font-family:var(--mono);font-size:11px;padding:4px 9px;border-radius:5px}
+.vatline{font-family:var(--mono);font-size:11.5px;color:var(--slate);margin-bottom:26px}
+.opt{margin-bottom:22px}
+.optlabel{font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--slate);margin-bottom:10px;display:flex;justify-content:space-between;gap:14px}
+html[dir=rtl] .optlabel{letter-spacing:0}
+.optlabel span:last-child{color:var(--mist);text-transform:none;letter-spacing:0}
+.chips{display:flex;gap:9px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);border-radius:10px;padding:11px 16px;font-size:14px;color:var(--slate);transition:.18s}
+.chip:hover{border-color:var(--cool-dim)}
+.chip[aria-pressed=true]{border-color:var(--cool);color:var(--mist);background:rgba(79,184,168,.1)}
+.chip small{display:block;font-family:var(--mono);font-size:11px;color:var(--cool);margin-top:3px}
+.qtyrow{display:flex;gap:12px;margin:26px 0 12px}
+.qty{display:flex;align-items:center;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.qty button{width:46px;height:100%;font-size:19px;color:var(--slate)}
+.qty button:hover{color:var(--mist)}
+.qty span{width:38px;text-align:center;font-family:var(--mono);font-size:16px}
+.buy{flex:1;background:var(--cool);color:var(--deep);font-weight:600;font-size:16px;border-radius:12px;padding:17px;transition:.18s}
+.buy:hover{background:var(--mist)}
+.buynow{width:100%;border:1px solid var(--line);border-radius:12px;padding:15px;font-size:15px;transition:.18s}
+.buynow:hover{border-color:var(--cool-dim)}
+.reassure{display:flex;gap:18px;flex-wrap:wrap;margin-top:20px;font-family:var(--mono);font-size:11.5px;color:var(--slate)}
+.reassure b{color:var(--cool);font-weight:400}
+.demo{background:var(--deep);border:1px solid var(--line);border-radius:18px;padding:26px;margin-top:30px}
+.demo-h{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--slate);margin-bottom:18px}
+html[dir=rtl] .demo-h{letter-spacing:0}
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;max-width:230px;margin:0 auto}
+.keypad button{aspect-ratio:1.5/1;border:1px solid var(--line);border-radius:11px;font-family:var(--mono);font-size:17px}
+.keypad button:active{background:var(--cool);color:var(--deep)}
+.codeline{text-align:center;font-family:var(--mono);font-size:26px;letter-spacing:.4em;margin-bottom:16px;min-height:34px;color:var(--cool)}
+.codemsg{text-align:center;font-size:13.5px;color:var(--slate);margin-top:16px;min-height:40px}
+.codemsg b{color:var(--cool);font-weight:500}
+.meter-out{display:flex;align-items:flex-end;gap:9px;margin-top:18px}
+.meter-out .v{font-family:var(--mono);font-size:38px;color:var(--amber);font-variant-numeric:tabular-nums;line-height:1}
+.meter-out .u{font-family:var(--mono);font-size:13px;color:var(--slate);padding-bottom:5px}
+.meter-note{font-size:13.5px;color:var(--slate);margin-top:10px}
+section{padding:66px 0;border-top:1px solid var(--line)}
+.sec-h{font-size:clamp(23px,2.9vw,32px);margin-bottom:32px}
+.spec{display:grid;grid-template-columns:1fr 1fr;gap:0 56px}
+.spec>div{display:flex;justify-content:space-between;gap:20px;padding:15px 0;border-bottom:1px solid var(--line);font-size:15px}
+.spec dt{color:var(--slate)}
+.spec dd{font-family:var(--mono);font-size:13.5px;text-align:end}
+.faq details{border-bottom:1px solid var(--line);padding:20px 0}
+.faq summary{cursor:pointer;font-size:17px;list-style:none;display:flex;justify-content:space-between;gap:16px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-family:var(--mono);color:var(--cool)}
+.faq details[open] summary::after{content:"−"}
+.faq p{color:var(--slate);font-size:15px;margin-top:12px;max-width:72ch}
+.rel{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.pcard{background:var(--deep);border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:9px;transition:border-color .2s,transform .2s}
+.pcard:hover{border-color:var(--cool-dim);transform:translateY(-3px)}
+.pcard .g{font-size:24px;color:var(--cool)}
+.pcard h3{font-size:17px}
+.pcard p{font-size:14px;color:var(--slate);flex:1}
+.prow{display:flex;justify-content:space-between;align-items:baseline;margin-top:6px}
+.price{font-family:var(--mono);font-size:16px;color:var(--cool)}
+.arrow{font-family:var(--mono);font-size:12px;color:var(--slate)}
+footer{padding:44px 0;border-top:1px solid var(--line);font-family:var(--mono);font-size:12px;color:var(--slate);display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.sticky{position:fixed;inset-block-end:0;inset-inline:0;z-index:70;background:rgba(7,26,27,.94);backdrop-filter:blur(12px);border-top:1px solid var(--line);transform:translateY(110%);transition:transform .3s}
+.sticky.show{transform:translateY(0)}
+.sticky-in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 24px;max-width:1140px;margin:0 auto}
+.sticky-l{font-size:14px}
+.sticky-l span{font-family:var(--mono);color:var(--cool);display:block;font-size:13px}
+.sticky .buy{flex:0 0 auto;padding:13px 30px}
+.overlay{position:fixed;inset:0;background:rgba(3,14,15,.8);z-index:100;display:none;place-items:center;padding:24px}
+.overlay.show{display:grid}
+.modal{background:var(--petrol);border:1px solid var(--line);border-radius:20px;max-width:470px;width:100%;padding:34px;max-height:90vh;overflow-y:auto}
+.modal h3{font-size:25px;margin-bottom:12px}
+.modal p{color:var(--slate);font-size:15px;margin-bottom:22px}
+.modal input,.modal select{width:100%;background:var(--deep);border:1px solid var(--line);border-radius:10px;padding:13px 15px;color:var(--mist);font-family:var(--body);font-size:16px;margin-bottom:12px}
+.modal input::placeholder{color:var(--slate);opacity:.6}
+.modal .buy{width:100%;margin-top:6px}
+.dismiss{display:block;width:100%;text-align:center;font-family:var(--mono);font-size:12px;color:var(--slate);margin-top:16px}
+.cartline{display:flex;justify-content:space-between;gap:14px;font-size:15px;padding:13px 0;border-bottom:1px solid var(--line);color:var(--slate)}
+.cartline b{color:var(--mist);font-weight:400}
+.panel-btn{position:fixed;inset-block-end:86px;inset-inline-end:20px;z-index:75;background:var(--amber);color:var(--deep);font-family:var(--mono);font-size:12px;font-weight:500;padding:11px 16px;border-radius:999px;box-shadow:0 8px 26px rgba(0,0,0,.45)}
+.panel{position:fixed;inset-block:0;inset-inline-end:0;width:min(360px,100%);z-index:110;background:var(--deep);border-inline-start:1px solid var(--line);transform:translateX(105%);transition:transform .3s;display:flex;flex-direction:column}
+html[dir=rtl] .panel{transform:translateX(-105%)}
+.panel.open{transform:translateX(0)}
+.panel-head{padding:20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;font-family:var(--mono);font-size:13px}
+.panel-body{padding:20px;overflow-y:auto;flex:1}
+.funnel>div{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(232,241,238,.07);font-family:var(--mono);font-size:12px;color:var(--slate)}
+.funnel .hit{color:var(--cool)}
+.log{font-family:var(--mono);font-size:11.5px;margin-top:20px}
+.log div{display:flex;gap:9px;padding:6px 0;border-bottom:1px solid rgba(232,241,238,.07);color:var(--slate)}
+.log .t{color:var(--cool-dim)}
+.log .e{color:var(--mist)}
+.panel-foot{padding:16px 20px;border-top:1px solid var(--line);font-family:var(--mono);font-size:10.5px;color:var(--slate);line-height:1.75}
+@media(max-width:900px){.pdp{grid-template-columns:1fr;gap:34px}.spec{grid-template-columns:1fr}.rel{grid-template-columns:1fr}section{padding:50px 0}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="wrap nav-in">
+  <a class="brand" href="index.html">Bayt<span>·</span>Control</a>
+  <div class="links">
+    <a href="index.html" data-en="Home" data-ar="الرئيسية">Home</a>
+    <a href="products.html" class="on" data-en="Products" data-ar="المنتجات">Products</a>
+    <a href="index.html#how" data-en="How it works" data-ar="كيف يشتغل">How it works</a>
+    <a href="index.html#install" data-en="Installation" data-ar="التركيب">Installation</a>
+  </div>
+  <div class="nav-right">
+    <button class="lang" id="langBtn">العربية</button>
+    <button class="cartbtn" id="cartBtn">CART <span class="badge" id="cartCount">0</span></button>
+  </div>
+</div></nav>
+
+<div class="wrap">
+  <div class="crumb" id="crumb"></div>
+  <div class="pdp">
+    <div>
+      <div class="stage"><span class="ph-tag">REPLACE WITH REAL PHOTO</span><span class="glyph" id="glyph">❄</span></div>
+      <div class="thumbs">
+        <button class="thumb" aria-pressed="true" data-ev="gallery_front">FRONT</button>
+        <button class="thumb" data-ev="gallery_back">BACK</button>
+        <button class="thumb" data-ev="gallery_use">IN USE</button>
+        <button class="thumb" data-ev="gallery_size">SIZE</button>
+      </div>
+    </div>
+    <div>
+      <div class="eyebrow" id="pCat"></div>
+      <h1 id="pTitle"></h1>
+      <p class="blurb" id="pBlurb"></p>
+      <div class="pricerow">
+        <span class="big" id="pPrice"></span>
+        <span style="font-family:var(--mono);color:var(--slate);font-size:15px">SAR</span>
+        <span class="was hidden" id="pWas"></span>
+        <span class="tag" id="pTag"></span>
+      </div>
+      <div class="vatline" id="pVat"></div>
+
+      <div class="opt hidden" id="optWrap">
+        <div class="optlabel"><span id="optName"></span><span id="optPick"></span></div>
+        <div class="chips" id="chips"></div>
+      </div>
+
+      <div class="qtyrow">
+        <div class="qty"><button id="qMinus" aria-label="Decrease">−</button><span id="qVal">1</span><button id="qPlus" aria-label="Increase">+</button></div>
+        <button class="buy" id="addBtn"></button>
+      </div>
+      <button class="buynow" id="buyNowBtn"></button>
+      <div class="reassure" id="reassure"></div>
+
+      <div class="demo hidden" id="demoLock">
+        <div class="demo-h" id="demoLockH"></div>
+        <div class="codeline" id="codeLine"></div>
+        <div class="keypad" id="keypad"></div>
+        <p class="codemsg" id="codeMsg"></p>
+      </div>
+      <div class="demo hidden" id="demoPlug">
+        <div class="demo-h" id="demoPlugH"></div>
+        <div class="chips" id="meterSel"></div>
+        <div class="meter-out"><span class="v" id="meterV">19</span><span class="u">SAR / month</span></div>
+        <p class="meter-note" id="meterNote"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <section><h2 class="sec-h" id="specHead"></h2><dl class="spec" id="specList"></dl></section>
+  <section class="faq"><h2 class="sec-h" id="faqHead"></h2><div id="faqList"></div></section>
+  <section><h2 class="sec-h" id="relHead"></h2><div class="rel" id="relList"></div></section>
+  <footer><span>Bayt Control · Riyadh</span><span id="srcLine">source: direct</span></footer>
+</div>
+
+<div class="sticky" id="sticky"><div class="sticky-in">
+  <div class="sticky-l" id="stickyName"></div>
+  <button class="buy" id="stickyBuy"></button>
+</div></div>
+
+<div class="overlay" id="overlay"><div class="modal">
+  <div id="cartView">
+    <h3 id="cartHead"></h3>
+    <div id="cartLines"></div>
+    <div class="cartline" style="border:none;padding-top:16px"><b id="totalLabel"></b><b id="cartTotal"></b></div>
+    <button class="buy" id="checkoutBtn"></button>
+    <button class="dismiss" id="closeCart"></button>
+  </div>
+  <div id="doorView" class="hidden">
+    <h3 id="doorHead"></h3>
+    <p id="doorBody"></p>
+    <input type="text" id="dName">
+    <input type="tel" id="dPhone" placeholder="05X XXX XXXX">
+    <select id="dWhen"></select>
+    <button class="buy" id="doorSubmit"></button>
+    <button class="dismiss" id="closeDoor"></button>
+  </div>
+  <div id="thanksView" class="hidden">
+    <h3 id="thanksHead" style="color:var(--cool)"></h3>
+    <p id="thanksBody"></p>
+    <button class="dismiss" id="closeThanks"></button>
+  </div>
+</div></div>
+
+<button class="panel-btn" id="panelBtn">◉ TEST</button>
+<aside class="panel" id="panel">
+  <div class="panel-head"><span>PURCHASE FUNNEL</span><button id="closePanel" style="color:var(--slate)">✕</button></div>
+  <div class="panel-body"><div class="funnel" id="funnel"></div><div class="log" id="log"></div></div>
+  <div class="panel-foot">Remove before running traffic. Events push to <b>window.dataLayer</b>. Watch <b>begin_checkout ÷ view_item</b> — that ratio is your real demand signal.</div>
+</aside>
+
+<script>
+/* ---------- catalog ---------- */
+const CATALOG=[
+ {id:'ac',g:'❄',c:'climate',price:349,was:449,demo:'plug',
+  en:['AC controller','Learns any split-unit remote. Reads room temperature and humidity itself, so it stops cooling an empty room.'],
+  ar:['متحكّم المكيّف','يتعلّم ريموت أي مكيّف سبليت، ويقرأ حرارة ورطوبة الغرفة بنفسه، فيوقف التبريد للغرفة الفاضية.'],
+  opt:{en:'Mounting',ar:'التركيب',items:[{en:'Stick-on',ar:'لاصق'},{en:'Wall bracket',ar:'حامل جداري'}]},
+  spec:[['compat','Any IR split unit'],['sensor','Temp ±0.3°C, humidity'],['power','USB-C, 1m cable'],['net','Wi-Fi 2.4GHz'],['range','8 m line of sight'],['size','62 × 62 × 18 mm']]},
+ {id:'thermo',g:'◉',c:'climate',price:429,
+  en:['Zone thermostat','Wired replacement for a central AC thermostat. One per floor, so upstairs stops running for an empty room.'],
+  ar:['ثرموستات المناطق','بديل سلكي لثرموستات التكييف المركزي. واحد لكل دور، عشان الدور العلوي ما يشتغل لغرفة فاضية.'],
+  opt:null,
+  spec:[['wiring','24V, 4–6 wire'],['display','2.4" touch'],['sensor','Temp + occupancy'],['net','Wi-Fi 2.4GHz'],['fits','86mm back box'],['install','Technician required']]},
+ {id:'temp',g:'△',c:'climate',price:59,
+  en:['Room temperature sensor','Lets the AC read the room you sleep in, not the hallway where the thermostat happens to be.'],
+  ar:['حساس حرارة الغرفة','يخلي المكيف يقرأ الغرفة اللي تنام فيها، مو الممر اللي صادف فيه الثرموستات.'],
+  opt:{en:'Pack',ar:'العبوة',items:[{en:'Single',ar:'حبة'},{en:'Pack of 3',ar:'٣ حبات',extra:'159 SAR',price:159}]},
+  spec:[['accuracy','±0.3°C'],['battery','CR2450, ~18 months'],['net','Bluetooth to hub'],['size','40 × 40 × 11 mm']]},
+ {id:'lock',g:'⌘',c:'security',price:500,was:650,demo:'lock',
+  en:['Smart door lock','Fingerprint, code, phone or the original key. Fits most Saudi villa doors without changing the door itself.'],
+  ar:['قفل الباب الذكي','بصمة أو رمز أو جوال أو المفتاح الأصلي. يركّب على أغلب أبواب الفلل بدون تغيير الباب.'],
+  opt:{en:'Finish',ar:'اللون',items:[{en:'Matte black',ar:'أسود مطفي'},{en:'Brushed silver',ar:'فضي مصنفر'},{en:'Bronze',ar:'برونزي'}]},
+  spec:[['unlock','Fingerprint · code · app · key'],['prints','100'],['codes','20 permanent + temporary'],['battery','4× AA, ~10 months'],['backup','USB-C power bank'],['door','38 – 65 mm thick'],['net','Wi-Fi + Bluetooth'],['body','Zinc alloy, IP54']],
+  faq:{en:[['What if the battery dies while I am out?','It warns you in the app for weeks first. If it still runs flat, hold a power bank to the USB-C port under the handle and it opens immediately. The metal key also still works.'],
+           ['Does it survive the summer heat?','The outdoor panel is rated to 60°C. A door in direct west-facing sun can exceed that surface temperature, so we only recommend it on shaded or recessed doors.'],
+           ['Can the housekeeper get in without my phone?','Yes. Give her a code that only works Sunday to Thursday, 8am to 4pm. It stops working on its own when you end it.']],
+       ar:[['وش يصير لو خلصت البطارية وأنا برا؟','ينبّهك بالتطبيق قبلها بأسابيع. ولو خلصت، قرّب باور بانك من منفذ USB-C تحت المقبض وينفتح على طول. والمفتاح المعدني برضه يشتغل.'],
+           ['يتحمّل حر الصيف؟','اللوحة الخارجية معتمدة حتى ٦٠ درجة. الباب اللي عليه شمس غربية مباشرة ممكن يتجاوزها، لذلك ننصح فيه للأبواب المظللة فقط.'],
+           ['تقدر العاملة تدخل بدون جوالي؟','نعم. تعطيها رمز يشتغل من الأحد للخميس، ٨ص – ٤م، ويوقف بنفسه لما تنهيه.']]}},
+ {id:'gate',g:'⊟',c:'security',price:449,
+  en:['Gate controller','Wires into the existing gate motor. Open from the car, or automatically when your phone reaches the street.'],
+  ar:['متحكّم البوابة','يتوصّل مع محرك البوابة الحالي. افتح من السيارة، أو تلقائياً لما جوالك يوصل الشارع.'],
+  opt:null,
+  spec:[['compat','Most 220V gate motors'],['relay','Dry contact, 2 channel'],['trigger','App · auto-arrival · code'],['net','Wi-Fi 2.4GHz'],['install','Technician required']]},
+ {id:'intercom',g:'▣',c:'security',price:699,
+  en:['Video intercom','See and talk to whoever is at the gate from anywhere. Replaces the handset unit, keeps the same wiring.'],
+  ar:['إنتركم بالفيديو','شوف وكلّم اللي عند البوابة من أي مكان. يستبدل السماعة القديمة ويستخدم نفس التمديدات.'],
+  opt:{en:'Screen',ar:'الشاشة',items:[{en:'Audio only',ar:'صوت فقط',price:449,extra:'449 SAR'},{en:'With 7" screen',ar:'مع شاشة ٧ إنش'}]},
+  spec:[['camera','1080p, 140° lens'],['night','IR to 5 m'],['storage','Local SD or cloud'],['power','Existing 2-wire'],['net','Wi-Fi 2.4GHz']]},
+ {id:'switch',g:'◫',c:'lighting',price:189,
+  en:['Wall switch, 3 gang','Replaces the existing plate, not the wiring. Still works by hand if the internet drops.'],
+  ar:['مفتاح جداري ٣ أزرار','يستبدل الغطاء الحالي، مو التمديدات. ويشتغل باليد عادي لو انقطع النت.'],
+  opt:{en:'Gangs',ar:'عدد الأزرار',items:[{en:'1 gang',ar:'زر واحد',price:129,extra:'129 SAR'},{en:'2 gang',ar:'زرّين',price:159,extra:'159 SAR'},{en:'3 gang',ar:'٣ أزرار'}]},
+  spec:[['fits','86mm back box'],['neutral','Required'],['load','10A per gang'],['manual','Yes, always works'],['net','Wi-Fi 2.4GHz']]},
+ {id:'dimmer',g:'◐',c:'lighting',price:229,
+  en:['Dimmer switch','For the majlis. Warm and full at Maghrib, low after Isha, without anyone touching it.'],
+  ar:['مفتاح تعتيم','للمجلس. دافي وكامل عند المغرب، وخافت بعد العشاء، بدون ما أحد يلمسه.'],
+  opt:null,
+  spec:[['fits','86mm back box'],['load','300W dimmable LED'],['neutral','Required'],['range','1 – 100%'],['net','Wi-Fi 2.4GHz']]},
+ {id:'plug',g:'◈',c:'power',price:89,was:129,demo:'plug',
+  en:['Smart plug 16A','A Type-G plug that switches from your phone and counts every watt behind it. Handles a freezer or a window AC, not just a lamp.'],
+  ar:['فيشة ذكية ١٦ أمبير','فيشة بريطانية تتحكم فيها من جوالك وتحسب كل واط خلفها. تتحمّل فريزر أو مكيف شباك، مو بس لمبة.'],
+  opt:{en:'Pack',ar:'العبوة',items:[{en:'Single',ar:'حبة'},{en:'Pack of 4',ar:'٤ حبات',price:299,extra:'299 SAR'},{en:'Pack of 8',ar:'٨ حبات',price:549,extra:'549 SAR'}]},
+  spec:[['rating','16A / 3680W, Type G'],['metering','Yes, ±1%'],['schedule','On/off, countdown, sunset'],['offline','Schedules keep running'],['cutoff','Automatic at 16A'],['size','54 × 54 × 72 mm'],['cert','SASO marked']],
+  faq:{en:[['Can I run a water heater on it?','Only if the heater is under 3680W and plugs in rather than being wired into the wall. Most Saudi wall-mounted heaters are hardwired — those need an electrician and a different device.'],
+           ['What happens to my schedules if the internet drops?','They keep running. The plug stores them on the device; you only lose remote control until the connection comes back.'],
+           ['Will it actually save me money?','It shows consumption honestly, which is not the same thing. Most people save by finding one appliance they did not know was running, not from the plug itself.']],
+       ar:[['أقدر أشغّل عليها سخّان؟','فقط لو السخان أقل من ٣٦٨٠ واط وله فيشة، مو موصّل مباشرة بالجدار. أغلب السخانات الجدارية في السعودية موصّلة مباشرة وتحتاج كهربائي وجهاز ثاني.'],
+           ['وش يصير للجدولة لو انقطع النت؟','تستمر تشتغل. الفيشة تحفظها داخلياً، وتفقد بس التحكم عن بعد لين يرجع الاتصال.'],
+           ['فعلاً بتوفّر علي؟','هي تعرض الاستهلاك بصدق، وهذا شي ثاني عن التوفير. أغلب الناس يوفّرون لأنهم يكتشفون جهاز شغّال وهم ما يدرون.']]}},
+ {id:'leak',g:'◌',c:'power',price:79,
+  en:['Water leak sensor','Sits flat under the sink or behind the washing machine. Two-year battery, messages you on the first drop.'],
+  ar:['حساس تسريب المياه','يوضع تحت المغسلة أو خلف الغسالة. بطارية سنتين، ويرسل لك من أول قطرة.'],
+  opt:{en:'Pack',ar:'العبوة',items:[{en:'Single',ar:'حبة'},{en:'Pack of 3',ar:'٣ حبات',price:199,extra:'199 SAR'}]},
+  spec:[['battery','CR2032, ~2 years'],['alarm','75dB local + app'],['height','13 mm'],['net','Bluetooth to hub']]},
+ {id:'hub',g:'⬡',c:'power',price:299,
+  en:['Hub','One per home. Keeps every routine running locally when the connection drops, and it is what everything else talks to.'],
+  ar:['الوحدة المركزية','وحدة واحدة للبيت. تخلي كل الروتينات تشتغل محلياً لو انقطع الاتصال، وهي اللي تتكلم معها بقية الأجهزة.'],
+  opt:null,
+  spec:[['devices','Up to 64'],['radios','Wi-Fi, Bluetooth, Zigbee'],['local','Routines run without internet'],['power','USB-C, 5V'],['size','96 × 96 × 24 mm']]}
+];
+const CATNAME={climate:{en:'COOLING',ar:'التكييف'},security:{en:'DOORS & GATE',ar:'الأبواب والبوابة'},lighting:{en:'LIGHTING',ar:'الإضاءة'},power:{en:'POWER & SAFETY',ar:'الكهرباء والسلامة'}};
+const SPECLAB={compat:{en:'Works with',ar:'يتوافق مع'},sensor:{en:'Sensor',ar:'الحساس'},power:{en:'Power',ar:'الطاقة'},net:{en:'Connectivity',ar:'الاتصال'},range:{en:'Range',ar:'المدى'},size:{en:'Size',ar:'المقاس'},wiring:{en:'Wiring',ar:'التمديدات'},display:{en:'Display',ar:'الشاشة'},fits:{en:'Fits',ar:'يركّب على'},install:{en:'Installation',ar:'التركيب'},accuracy:{en:'Accuracy',ar:'الدقة'},battery:{en:'Battery',ar:'البطارية'},unlock:{en:'Unlock methods',ar:'طرق الفتح'},prints:{en:'Fingerprints',ar:'البصمات'},codes:{en:'Codes',ar:'الرموز'},backup:{en:'Emergency power',ar:'طاقة الطوارئ'},door:{en:'Door thickness',ar:'سماكة الباب'},body:{en:'Body',ar:'الجسم'},relay:{en:'Relay',ar:'الريلاي'},trigger:{en:'Triggers',ar:'المشغّلات'},camera:{en:'Camera',ar:'الكاميرا'},night:{en:'Night vision',ar:'الرؤية الليلية'},storage:{en:'Storage',ar:'التخزين'},neutral:{en:'Neutral wire',ar:'سلك النيوترال'},load:{en:'Load',ar:'الحمل'},manual:{en:'Manual use',ar:'الاستخدام اليدوي'},rating:{en:'Rating',ar:'التحمّل'},metering:{en:'Energy metering',ar:'قياس الاستهلاك'},schedule:{en:'Scheduling',ar:'الجدولة'},offline:{en:'Works offline',ar:'يشتغل بدون نت'},cutoff:{en:'Overload cut-off',ar:'قطع الحمل الزائد'},cert:{en:'Certification',ar:'الشهادة'},alarm:{en:'Alarm',ar:'التنبيه'},height:{en:'Height',ar:'الارتفاع'},devices:{en:'Devices',ar:'عدد الأجهزة'},radios:{en:'Radios',ar:'الاتصالات'},local:{en:'Local control',ar:'التحكم المحلي'}};
+const COMMON_FAQ={
+ en:[['Who installs it?','Our technician, in one visit, 250 SAR for the whole home — not per device. We call first and tell you what you actually need, which is often less than you ordered.'],
+     ['What if I move house?','Everything unclips and comes with you. Nothing here is built into the wall except the switches, and those go back to the original plate in ten minutes.'],
+     ['Does it work when the internet is down?','Routines keep running on the hub. You lose remote control from outside the house until the connection is back.'],
+     ['What is the return policy?','Fourteen days. If it changes nothing about how the house runs, we collect it and refund you.']],
+ ar:[['مين يركّبه؟','فني من عندنا، زيارة وحدة، ٢٥٠ ريال للبيت كامل — مو لكل جهاز. نتصل قبل ونقول لك وش تحتاج فعلاً، وغالباً أقل مما طلبت.'],
+     ['لو انتقلت من البيت؟','كل شي يفك ويجي معك. ما في شي مبني بالجدار إلا المفاتيح، وهذي ترجع للغطاء الأصلي في عشر دقايق.'],
+     ['يشتغل لو انقطع النت؟','الروتينات تستمر على الوحدة المركزية. تفقد بس التحكم من برا البيت لين يرجع الاتصال.'],
+     ['سياسة الإرجاع؟','أربعة عشر يوم. لو ما غيّر شي في طريقة تشغيل البيت، نستلمه ونرجّع المبلغ.']]};
+const APPLIANCES=[
+ {en:'Deep freezer',ar:'فريزر',w:150,duty:1,note:{en:'Runs all day, all year. Usually the quiet one.',ar:'يشتغل طول اليوم طول السنة. عادة هو الصامت.'}},
+ {en:'Window AC',ar:'مكيف شباك',w:1200,duty:0.33,note:{en:'Eight hours a night in July. This is where the money goes.',ar:'ثمان ساعات كل ليلة في يوليو. هنا تروح الفلوس.'}},
+ {en:'Water cooler',ar:'برّاد ماء',w:90,duty:0.4,note:{en:'Small, but it never turns off.',ar:'صغير، لكنه ما يطفي أبداً.'}},
+ {en:'Washing machine',ar:'غسالة',w:500,duty:0.06,note:{en:'Loud, but cheap to run.',ar:'صوتها عالي، لكن تشغيلها رخيص.'}}];
+
+/* ---------- state ---------- */
+const SLUG={ac:'smart-ac-controller.html',thermo:'zone-thermostat.html',temp:'room-temperature-sensor.html',lock:'smart-door-lock.html',gate:'gate-controller.html',intercom:'video-intercom.html',switch:'smart-wall-switch.html',dimmer:'dimmer-switch.html',plug:'smart-plug-16a.html',leak:'water-leak-sensor.html',hub:'smart-home-hub.html'};
+const qs=new URLSearchParams(location.search);
+let P=CATALOG.find(p=>p.id==='leak');
+let lang='en',qty=1,opt=0,cart=[],appl=0,code='';
+const started=Date.now();
+window.dataLayer=window.dataLayer||[];
+const FUNNEL=['view_item','variant_select','demo_used','add_to_cart','begin_checkout','intent_captured'];
+const hits=new Set();
+function track(n,d){const t=((Date.now()-started)/1000).toFixed(1)+'s';
+ window.dataLayer.push({event:n,product:P.id,detail:d||null,page:'pdp'});
+ const r=document.createElement('div');
+ r.innerHTML='<span class="t">'+t+'</span><span class="e">'+n+(d?' <span style="color:var(--slate)">'+d+'</span>':'')+'</span>';
+ document.getElementById('log').prepend(r);
+ if(FUNNEL.includes(n)){hits.add(n);drawFunnel();}}
+function drawFunnel(){document.getElementById('funnel').innerHTML=FUNNEL.map(f=>
+ '<div class="'+(hits.has(f)?'hit':'')+'"><span>'+f+'</span><span>'+(hits.has(f)?'✓':'—')+'</span></div>').join('');}
+const src=qs.get('utm_source')||'direct';
+document.getElementById('srcLine').textContent='source: '+src;
+const T=(o)=>lang==='ar'?o.ar:o.en;
+
+function unitPrice(){
+ if(P.opt&&P.opt.items[opt]&&P.opt.items[opt].price)return P.opt.items[opt].price;
+ return P.price;
+}
+function render(){
+ const L=lang;
+ document.title=P[L][0]+' — Bayt Control';
+ document.getElementById('crumb').innerHTML=
+  '<a href="index.html">'+(L==='ar'?'الرئيسية':'HOME')+'</a> / <a href="products.html?c='+P.c+'">'+CATNAME[P.c][L]+'</a> / '+P[L][0];
+ document.getElementById('glyph').textContent=P.g;
+ document.getElementById('pCat').textContent=CATNAME[P.c][L];
+ document.getElementById('pTitle').textContent=P[L][0];
+ document.getElementById('pBlurb').textContent=P[L][1];
+ document.getElementById('pPrice').textContent=unitPrice().toLocaleString('en-US');
+ const w=document.getElementById('pWas');
+ if(P.was){w.textContent=P.was.toLocaleString('en-US');w.classList.remove('hidden');}else w.classList.add('hidden');
+ document.getElementById('pTag').textContent=L==='ar'?'سعر التجربة':'PILOT PRICE';
+ document.getElementById('pVat').textContent=L==='ar'?'شامل الضريبة · توصيل مجاني داخل الرياض':'VAT included · free delivery inside Riyadh';
+
+ const ow=document.getElementById('optWrap');
+ if(P.opt){
+  ow.classList.remove('hidden');
+  document.getElementById('optName').textContent=T(P.opt);
+  document.getElementById('optPick').textContent=T(P.opt.items[opt]);
+  document.getElementById('chips').innerHTML=P.opt.items.map((it,i)=>
+   '<button class="chip" data-i="'+i+'" aria-pressed="'+(i===opt)+'">'+T(it)+(it.extra?'<small>'+it.extra+'</small>':'')+'</button>').join('');
+ } else ow.classList.add('hidden');
+
+ document.getElementById('qVal').textContent=qty;
+ document.getElementById('addBtn').textContent=L==='ar'?'أضف للسلة':'Add to cart';
+ document.getElementById('buyNowBtn').textContent=L==='ar'?'اشترِ الآن':'Buy now';
+ document.getElementById('stickyBuy').textContent=L==='ar'?'أضف للسلة':'Add to cart';
+ document.getElementById('stickyName').innerHTML=P[L][0]+'<span>'+unitPrice()+' SAR</span>';
+ document.getElementById('reassure').innerHTML=(L==='ar'
+  ?['إرجاع ١٤ يوم','ضمان سنتين','تركيب ٢٥٠ ريال للبيت']
+  :['14-day return','2-year warranty','250 SAR install per home'])
+  .map(x=>'<span><b>◇</b> '+x+'</span>').join('');
+
+ document.getElementById('specHead').textContent=L==='ar'?'المواصفات':'Specifications';
+ document.getElementById('specList').innerHTML=P.spec.map(r=>
+  '<div><dt>'+(SPECLAB[r[0]]?SPECLAB[r[0]][L]:r[0])+'</dt><dd>'+r[1]+'</dd></div>').join('');
+
+ const faqs=(P.faq?P.faq[L]:[]).concat(COMMON_FAQ[L]);
+ document.getElementById('faqHead').textContent=L==='ar'?'أسئلة':'Questions';
+ document.getElementById('faqList').innerHTML=faqs.map(f=>
+  '<details><summary>'+f[0]+'</summary><p>'+f[1]+'</p></details>').join('');
+ document.querySelectorAll('.faq details').forEach(el=>
+  el.addEventListener('toggle',()=>{if(el.open)track('faq_open');}));
+
+ const rel=CATALOG.filter(x=>x.c===P.c&&x.id!==P.id).slice(0,3);
+ document.getElementById('relHead').textContent=L==='ar'?'يتركّب معه عادة':'Usually fitted with this';
+ document.getElementById('relList').innerHTML=rel.map(p=>
+  '<a class="pcard" href="'+SLUG[p.id]+'" data-ev="related_'+p.id+'"><span class="g">'+p.g+'</span>'+
+  '<h3>'+p[L][0]+'</h3><p>'+p[L][1]+'</p><div class="prow"><span class="price">'+p.price+' SAR</span><span class="arrow">→</span></div></a>').join('');
+
+ /* demos */
+ document.getElementById('demoLock').classList.toggle('hidden',P.demo!=='lock');
+ document.getElementById('demoPlug').classList.toggle('hidden',P.demo!=='plug');
+ if(P.demo==='lock'){
+  document.getElementById('demoLockH').textContent=L==='ar'?'جرّبه — سوِّ رمز للعاملة':'Try it — make a code for the housekeeper';
+  if(!code)document.getElementById('codeMsg').textContent=L==='ar'?'اضغط أربعة أرقام.':'Tap four digits.';
+ }
+ if(P.demo==='plug'){
+  document.getElementById('demoPlugH').textContent=P.id==='ac'
+   ?(L==='ar'?'كم يكلّفك الجهاز حالياً؟':'What is it costing you now?')
+   :(L==='ar'?'كم يكلّفك الجهاز حالياً؟':'What is it costing you now?');
+  renderMeter();
+ }
+
+ /* modal copy */
+ document.getElementById('cartHead').textContent=L==='ar'?'سلتك':'Your cart';
+ document.getElementById('totalLabel').textContent=L==='ar'?'الإجمالي':'Total';
+ document.getElementById('checkoutBtn').textContent=L==='ar'?'إتمام الشراء':'Checkout';
+ document.getElementById('closeCart').textContent=L==='ar'?'أكمل التصفح':'Keep looking';
+ document.getElementById('doorHead').textContent=L==='ar'?'هذي الدفعة محجوزة':'This batch is spoken for';
+ document.getElementById('doorBody').textContent=L==='ar'
+  ?'ننتج على دفعات من ٥٠. الدفعة الجاية تشحن خلال ثلاثة أسابيع تقريباً. سجّل رقمك وتاخذ الأولوية مع تثبيت سعر التجربة — ما ينخصم منك شي الآن.'
+  :'We build in runs of 50. The next run ships in about three weeks. Leave your number and you get first pick with the pilot price held — nothing is charged now.';
+ document.getElementById('dName').placeholder=L==='ar'?'الاسم':'Name';
+ document.getElementById('doorSubmit').textContent=L==='ar'?'احجز لي وحدة':'Hold my unit';
+ document.getElementById('closeDoor').textContent=L==='ar'?'لا شكراً':'No thanks';
+ document.getElementById('thanksHead').textContent=L==='ar'?'محجوزة لك':'Held for you';
+ document.getElementById('thanksBody').textContent=L==='ar'
+  ?'أنت ضمن الدفعة الجاية. بنراسلك أول ما تشحن — بدون دفع لين ذاك الوقت.'
+  :"You're in the next run. We'll message you when it ships — no payment until then.";
+ document.getElementById('closeThanks').textContent=L==='ar'?'إغلاق':'Close';
+ document.getElementById('dWhen').innerHTML=(L==='ar'
+  ?['أبي أشتريه هالأسبوع','خلال شهر','أقارن حالياً فقط']
+  :["I'd buy this week",'Within a month','Just comparing for now']).map(o=>'<option>'+o+'</option>').join('');
+
+ bind();
+}
+function bind(){
+ document.querySelectorAll('#chips .chip').forEach(c=>c.addEventListener('click',()=>{
+  opt=+c.dataset.i;track('variant_select',T(P.opt.items[opt]));render();}));
+}
+
+/* meter demo */
+function renderMeter(){
+ document.getElementById('meterSel').innerHTML=APPLIANCES.map((a,i)=>
+  '<button class="chip" data-i="'+i+'" aria-pressed="'+(i===appl)+'">'+T(a)+'</button>').join('');
+ const a=APPLIANCES[appl],kwh=a.w*24*30*a.duty/1000;
+ document.getElementById('meterV').textContent=Math.round(kwh*0.18);
+ document.getElementById('meterNote').innerHTML=T(a.note)+' <span style="opacity:.6">≈ '+Math.round(kwh)+' kWh</span>';
+ document.querySelectorAll('#meterSel .chip').forEach(c=>c.addEventListener('click',()=>{
+  appl=+c.dataset.i;track('demo_used',APPLIANCES[appl].en);renderMeter();}));
+}
+/* keypad demo */
+document.getElementById('keypad').innerHTML=[1,2,3,4,5,6,7,8,9,'✕',0,'✓'].map(n=>'<button>'+n+'</button>').join('');
+document.querySelectorAll('#keypad button').forEach(b=>b.addEventListener('click',()=>{
+ const v=b.textContent;
+ if(v==='✕'){code='';}
+ else if(v==='✓'){
+  if(code.length===4){
+   document.getElementById('codeMsg').innerHTML=lang==='ar'
+    ?'الرمز <b>'+code+'</b> شغّال من الأحد للخميس، ٨ص – ٤م. يوقف تلقائياً بعد شهر.'
+    :'Code <b>'+code+'</b> works Sunday to Thursday, 8am–4pm. It expires on its own in a month.';
+   track('demo_used','code_set');}
+  return;}
+ else if(code.length<4)code+=v;
+ document.getElementById('codeLine').textContent=code.replace(/./g,'●');
+ if(code.length===4)document.getElementById('codeMsg').textContent=lang==='ar'?'اضغط ✓ لتفعيله.':'Press ✓ to activate.';}));
+
+/* cart + fake door */
+function openCart(){
+ const total=cart.reduce((s,l)=>s+l.price*l.q,0);
+ document.getElementById('cartLines').innerHTML=cart.map(l=>
+  '<div class="cartline"><b>'+l.name+' × '+l.q+'</b><b>'+(l.price*l.q).toLocaleString('en-US')+' SAR</b></div>').join('');
+ document.getElementById('cartTotal').textContent=total.toLocaleString('en-US')+' SAR';
+ document.getElementById('cartView').classList.remove('hidden');
+ document.getElementById('doorView').classList.add('hidden');
+ document.getElementById('thanksView').classList.add('hidden');
+ document.getElementById('overlay').classList.add('show');
+}
+function addToCart(){
+ const label=P[lang][0]+(P.opt?' · '+T(P.opt.items[opt]):'');
+ cart.push({name:label,price:unitPrice(),q:qty});
+ document.getElementById('cartCount').textContent=cart.reduce((s,l)=>s+l.q,0);
+ track('add_to_cart',label+' ×'+qty);openCart();
+}
+function showDoor(){
+ track('begin_checkout');
+ document.getElementById('cartView').classList.add('hidden');
+ document.getElementById('doorView').classList.remove('hidden');
+ document.getElementById('overlay').classList.add('show');
+}
+document.getElementById('addBtn').addEventListener('click',addToCart);
+document.getElementById('stickyBuy').addEventListener('click',addToCart);
+document.getElementById('buyNowBtn').addEventListener('click',()=>{track('buy_now_click');addToCart();setTimeout(showDoor,150);});
+document.getElementById('cartBtn').addEventListener('click',()=>{
+ if(!cart.length){track('cart_open_empty');return;}track('cart_open');openCart();});
+document.getElementById('checkoutBtn').addEventListener('click',showDoor);
+document.getElementById('doorSubmit').addEventListener('click',()=>{
+ const n=document.getElementById('dName').value.trim(),p=document.getElementById('dPhone').value.trim();
+ if(!n||p.length<9){track('door_invalid');
+  alert(lang==='ar'?'اكتب اسمك ورقمك.':'Add your name and number.');return;}
+ track('intent_captured',document.getElementById('dWhen').value);
+ document.getElementById('doorView').classList.add('hidden');
+ document.getElementById('thanksView').classList.remove('hidden');});
+['closeCart','closeDoor','closeThanks'].forEach(id=>document.getElementById(id).addEventListener('click',()=>{
+ if(id==='closeDoor')track('door_abandoned');
+ document.getElementById('overlay').classList.remove('show');}));
+document.getElementById('overlay').addEventListener('click',e=>{
+ if(e.target.id==='overlay')document.getElementById('overlay').classList.remove('show');});
+
+/* misc */
+document.getElementById('qPlus').addEventListener('click',()=>{qty++;render();track('qty_change',qty);});
+document.getElementById('qMinus').addEventListener('click',()=>{if(qty>1){qty--;render();track('qty_change',qty);}});
+document.querySelectorAll('.thumb').forEach(b=>b.addEventListener('click',()=>{
+ document.querySelectorAll('.thumb').forEach(x=>x.setAttribute('aria-pressed','false'));
+ b.setAttribute('aria-pressed','true');track(b.dataset.ev);}));
+addEventListener('scroll',()=>document.getElementById('sticky').classList.toggle('show',scrollY>600));
+document.addEventListener('click',e=>{const el=e.target.closest('[data-ev]');
+ if(el&&el.dataset.ev.indexOf('related_')===0)track(el.dataset.ev);});
+document.getElementById('langBtn').addEventListener('click',()=>{
+ lang=lang==='en'?'ar':'en';
+ document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';
+ document.getElementById('langBtn').textContent=lang==='ar'?'English':'العربية';
+ document.querySelectorAll('[data-en]').forEach(el=>el.innerHTML=el.dataset[lang]);
+ render();track('lang_switch',lang);});
+document.getElementById('panelBtn').addEventListener('click',()=>document.getElementById('panel').classList.add('open'));
+document.getElementById('closePanel').addEventListener('click',()=>document.getElementById('panel').classList.remove('open'));
+
+render();drawFunnel();track('view_item',P.id+' / '+src);
+</script>
+</body>
+</html>
