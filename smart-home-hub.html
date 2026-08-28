@@ -122,8 +122,18 @@ footer{padding:44px 0;border-top:1px solid var(--line);font-family:var(--mono);f
 .modal input::placeholder{color:var(--slate);opacity:.6}
 .modal .buy{width:100%;margin-top:6px}
 .dismiss{display:block;width:100%;text-align:center;font-family:var(--mono);font-size:12px;color:var(--slate);margin-top:16px}
-.cartline{display:flex;justify-content:space-between;gap:14px;font-size:15px;padding:13px 0;border-bottom:1px solid var(--line);color:var(--slate)}
+.cartline{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;font-size:15px;padding:13px 0;border-bottom:1px solid var(--line);color:var(--slate)}
 .cartline b{color:var(--mist);font-weight:400}
+.cl-main{flex:1;min-width:0}
+.cl-var{display:block;font-size:13px;color:var(--slate);margin-block-start:3px;line-height:1.35}
+.cl-amt{white-space:nowrap}
+.cl-qty{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:8px;padding:2px 6px}
+.cl-qty button{color:var(--slate);font-size:15px;line-height:1;padding:2px 3px}
+.cl-qty button:hover{color:var(--cool)}
+.cl-qty span{font-family:var(--mono);font-size:13px;min-width:14px;text-align:center;color:var(--mist)}
+.cl-rm{color:var(--slate);font-size:17px;line-height:1;padding:2px 4px}
+.cl-rm:hover{color:var(--amber)}
+.cartfee{display:flex;justify-content:space-between;gap:14px;font-size:14px;padding:12px 0;color:var(--slate)}
 .panel-btn{position:fixed;inset-block-end:86px;inset-inline-end:20px;z-index:75;background:var(--amber);color:var(--deep);font-family:var(--mono);font-size:12px;font-weight:500;padding:11px 16px;border-radius:999px;box-shadow:0 8px 26px rgba(0,0,0,.45)}
 .panel{position:fixed;inset-block:0;inset-inline-end:0;width:min(360px,100%);z-index:110;background:var(--deep);border-inline-start:1px solid var(--line);transform:translateX(105%);transition:transform .3s;display:flex;flex-direction:column}
 html[dir=rtl] .panel{transform:translateX(-105%)}
@@ -153,7 +163,7 @@ html[dir=rtl] .panel{transform:translateX(-105%)}
   </div>
   <div class="nav-right">
     <button class="lang" id="langBtn">العربية</button>
-    <button class="cartbtn" id="cartBtn">CART <span class="badge" id="cartCount">0</span></button>
+    <button class="cartbtn" id="cartBtn"><span data-en="CART" data-ar="السلة">CART</span> <span class="badge" id="cartCount">0</span></button>
   </div>
 </div></nav>
 
@@ -429,21 +439,84 @@ document.querySelectorAll('#keypad button').forEach(b=>b.addEventListener('click
  if(code.length===4)document.getElementById('codeMsg').textContent=lang==='ar'?'اضغط ✓ لتفعيله.':'Press ✓ to activate.';}));
 
 /* cart + fake door */
-function openCart(){
- const total=cart.reduce((s,l)=>s+l.price*l.q,0);
- document.getElementById('cartLines').innerHTML=cart.map(l=>
-  '<div class="cartline"><b>'+l.name+' × '+l.q+'</b><b>'+(l.price*l.q).toLocaleString('en-US')+' SAR</b></div>').join('');
+/* Charged once per home however many devices are ordered, which is
+   why it is a separate line rather than part of each item. */
+const INSTALL_FEE=250;
+
+/* A cart line stores the product id and which option was picked, not
+   the finished text, so the cart re-reads correctly when the visitor
+   switches language. */
+function lineName(l){return CATALOG.find(x=>x.id===l.id)[lang][0];}
+function lineVariant(l){
+ const prod=CATALOG.find(x=>x.id===l.id);
+ return prod.opts.map((g,i)=>T(g.items[l.picks[i]||0])).join(' · ');
+}
+function cartCount(){return cart.reduce((s,l)=>s+l.q,0);}
+function updateBadge(){document.getElementById('cartCount').textContent=cartCount();}
+
+function drawCart(){
+ const L=lang;
+ document.getElementById('cartLines').innerHTML=cart.map((l,i)=>{
+  const variant=lineVariant(l);
+  return '<div class="cartline">'+
+   '<span class="cl-main"><b>'+lineName(l)+'</b>'+
+     (variant?'<span class="cl-var">'+variant+'</span>':'')+'</span>'+
+   '<span class="cl-qty"><button data-dec="'+i+'" aria-label="-">−</button>'+
+     '<span>'+l.q+'</span>'+
+     '<button data-inc="'+i+'" aria-label="+">+</button></span>'+
+   '<b class="cl-amt">'+(l.price*l.q).toLocaleString('en-US')+' SAR</b>'+
+   '<button class="cl-rm" data-rm="'+i+'" aria-label="'+(L==='ar'?'إزالة':'Remove')+'">×</button>'+
+  '</div>';
+ }).join('')+
+ (cart.length?'<div class="cartfee"><span>'+
+   (L==='ar'?'التركيب · مرة واحدة للمنزل':'Installation · once per home')+
+   '</span><span>'+INSTALL_FEE+' SAR</span></div>':'');
+
+ const goods=cart.reduce((s,l)=>s+l.price*l.q,0);
+ const total=goods+(cart.length?INSTALL_FEE:0);
  document.getElementById('cartTotal').textContent=total.toLocaleString('en-US')+' SAR';
+ updateBadge();
+
+ document.querySelectorAll('#cartLines [data-rm]').forEach(btn=>btn.addEventListener('click',()=>{
+  const l=cart[+btn.dataset.rm];
+  track('cart_remove',lineName(l));
+  cart.splice(+btn.dataset.rm,1);
+  if(cart.length)drawCart(); else closeOverlay();
+ }));
+ document.querySelectorAll('#cartLines [data-inc]').forEach(btn=>btn.addEventListener('click',()=>{
+  cart[+btn.dataset.inc].q++;track('cart_qty_change','+');drawCart();}));
+ document.querySelectorAll('#cartLines [data-dec]').forEach(btn=>btn.addEventListener('click',()=>{
+  const i=+btn.dataset.dec;
+  if(cart[i].q>1){cart[i].q--;track('cart_qty_change','-');drawCart();}
+  else{track('cart_remove',lineName(cart[i]));cart.splice(i,1);
+       if(cart.length)drawCart(); else closeOverlay();}
+ }));
+}
+
+function closeOverlay(){
+ updateBadge();
+ document.getElementById('overlay').classList.remove('show');
+}
+
+function openCart(){
+ drawCart();
  document.getElementById('cartView').classList.remove('hidden');
  document.getElementById('doorView').classList.add('hidden');
  document.getElementById('thanksView').classList.add('hidden');
  document.getElementById('overlay').classList.add('show');
 }
+
 function addToCart(){
+ /* Adding the same product in the same variant should raise the count
+    on the line that is already there, not open a second identical one. */
+ const key=P.id+'|'+P.opts.map((g,i)=>picks[i]||0).join('|');
+ const existing=cart.find(l=>l.key===key);
+ if(existing)existing.q+=qty;
+ else cart.push({key:key,id:P.id,picks:P.opts.map((g,i)=>picks[i]||0),price:unitPrice(),q:qty});
  const label=P[lang][0]+(P.opts.length?' · '+chosen().map(it=>T(it)).join(' · '):'');
- cart.push({name:label,price:unitPrice(),q:qty});
- document.getElementById('cartCount').textContent=cart.reduce((s,l)=>s+l.q,0);
- track('add_to_cart',label+' ×'+qty);openCart();
+ updateBadge();
+ track('add_to_cart',label+' ×'+qty);
+ openCart();
 }
 function showDoor(){
  track('begin_checkout');
