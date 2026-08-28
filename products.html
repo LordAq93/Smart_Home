@@ -50,7 +50,8 @@ html[dir=rtl] .flab{letter-spacing:0}
 .count{margin-inline-start:auto;font-family:var(--mono);font-size:12px;color:var(--slate)}
 
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;padding:40px 0 20px}
-.pcard{background:var(--deep);border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:9px;position:relative;transition:border-color .2s}
+.pcard{background:var(--deep);border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:9px;position:relative;transition:border-color .2s;cursor:pointer}
+.pcard .detail{cursor:auto}
 .pcard:hover{border-color:var(--cool-dim)}
 .pcard.open{border-color:var(--cool)}
 .pcard .g{font-size:26px;color:var(--cool)}
@@ -251,7 +252,7 @@ function render(){
   return '<div class="pcard'+(open?' open':'')+'" data-id="'+p.id+'">'+
    (p.flag?'<span class="flag '+p.flag+'">'+FLAG[p.flag][L]+'</span>':'')+
    '<span class="g">'+p.g+'</span><span class="cat">'+CATNAME[p.c][L]+'</span>'+
-   '<h3>'+p[L][0]+'</h3><p>'+p[L][1]+'</p>'+
+   '<h3><a href="'+SLUG[p.id]+'" data-m="'+p.id+'">'+p[L][0]+'</a></h3><p>'+p[L][1]+'</p>'+
    '<div class="prow"><span class="price">'+p.price+' SAR'+(p.was?'<s>'+p.was+'</s>':'')+'</span>'+
    '<button class="expand" data-x="'+p.id+'">'+(open?(L==='ar'?'إخفاء ▲':'Hide ▲'):(L==='ar'?'التفاصيل ▼':'Details ▼'))+'</button></div>'+
    (open?'<div class="detail"><dl>'+p.spec.map(s=>
@@ -311,6 +312,19 @@ document.addEventListener('click',e=>{
  if(cc){cat=cc.dataset.c;track('filter_room',cat);render();return;}
  const pc=e.target.closest('[data-p]');
  if(pc){pr=pc.dataset.p;track('filter_price',pr);render();return;}
+
+ /* Anything else inside a card opens that product. Every button and
+    link above has already returned, so reaching here means the click
+    landed on the card itself. The expanded detail panel is excluded:
+    someone reading the specs there should not be navigated away. */
+ const card=e.target.closest('.pcard');
+ if(card&&!e.target.closest('.detail')){
+  /* A click that finished a text selection is not a click on the card. */
+  if(window.getSelection().toString())return;
+  const id=card.dataset.id;
+  track('to_full_page',null,id);
+  location.href=SLUG[id];
+ }
 });
 
 document.getElementById('mSubmit').addEventListener('click',()=>{
