@@ -23,7 +23,7 @@
    the on-screen TEST panel still fills in, but nothing is sent to
    Google. That means previewing pages on your own machine will not
    pollute the real numbers with your own visits. */
-const GA_ID = "";
+const GA_ID = "G-NMQF7DPPKF";
 
 
 /* Google's own snippet. gtag() just drops its arguments into a list
