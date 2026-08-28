@@ -252,6 +252,7 @@ html[dir=rtl] .panel{transform:translateX(-105%)}
 </aside>
 
 <script src="analytics.js"></script>
+<script src="site.js"></script>
 <script>
 /* ---------- catalog ---------- */
 const CATALOG=[
@@ -343,7 +344,7 @@ const APPLIANCES=[
 /* ---------- state ---------- */
 const SLUG={ac:'smart-ac-controller.html',thermo:'zone-thermostat.html',temp:'room-temperature-sensor.html',lock:'smart-door-lock.html',gate:'gate-controller.html',intercom:'video-intercom.html',switch:'smart-wall-switch.html',dimmer:'dimmer-switch.html',plug:'smart-plug-16a.html',leak:'water-leak-sensor.html',hub:'smart-home-hub.html'};
 let P=CATALOG.find(p=>p.id==='gate');
-let lang='en',qty=1,opt=0,cart=[],appl=0,code='';
+let lang=SiteLang.saved(),qty=1,opt=0,cart=[],appl=0,code='';
 const FUNNEL=['view_item','variant_select','demo_used','add_to_cart','begin_checkout','intent_captured'];
 const hits=new Set();
 
@@ -538,13 +539,12 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-ev]');
  if(el&&el.dataset.ev.indexOf('related_')===0)track(el.dataset.ev);});
 document.getElementById('langBtn').addEventListener('click',()=>{
  lang=lang==='en'?'ar':'en';
- document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';
- document.getElementById('langBtn').textContent=lang==='ar'?'English':'العربية';
- document.querySelectorAll('[data-en]').forEach(el=>el.innerHTML=el.dataset[lang]);
+ SiteLang.apply(lang);
  render();track('lang_switch',lang);});
 document.getElementById('panelBtn').addEventListener('click',()=>document.getElementById('panel').classList.add('open'));
 document.getElementById('closePanel').addEventListener('click',()=>document.getElementById('panel').classList.remove('open'));
 
+SiteLang.apply(lang);
 render();drawFunnel();track('view_item');
 </script>
 </body>

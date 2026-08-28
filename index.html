@@ -240,6 +240,7 @@ html[dir=rtl] .panel{transform:translateX(-105%)}
 </aside>
 
 <script src="analytics.js"></script>
+<script src="site.js"></script>
 <script>
 const SLUG={ac:'smart-ac-controller.html',thermo:'zone-thermostat.html',temp:'room-temperature-sensor.html',lock:'smart-door-lock.html',gate:'gate-controller.html',intercom:'video-intercom.html',switch:'smart-wall-switch.html',dimmer:'dimmer-switch.html',plug:'smart-plug-16a.html',leak:'water-leak-sensor.html',hub:'smart-home-hub.html'};
 const CATALOG=[
@@ -251,7 +252,7 @@ const CATALOG=[
  {id:'leak',g:'◌',c:'power',price:79,en:['Water leak sensor','Sits flat under the sink. Alerts on the first drop.'],ar:['حساس تسريب المياه','يوضع تحت المغسلة. ينبّهك من أول قطرة.']}
 ];
 
-const started=Date.now();let events=0,maxScroll=0,lang='en';
+const started=Date.now();let events=0,maxScroll=0,lang=SiteLang.saved();
 
 /* Tell the shared analytics file which page this is. There is no one
    product here, so Analytics.product stays null. */
@@ -309,14 +310,15 @@ document.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',(
 
 document.getElementById('langBtn').addEventListener('click',()=>{
  lang=lang==='en'?'ar':'en';
- document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';
- document.getElementById('langBtn').textContent=lang==='ar'?'English':'العربية';
- document.querySelectorAll('[data-en]').forEach(el=>el.innerHTML=el.dataset[lang]);
+ SiteLang.apply(lang);
  renderFeatured();render();track('lang_switch',lang);});
 
 document.getElementById('panelBtn').addEventListener('click',()=>document.getElementById('panel').classList.add('open'));
 document.getElementById('closePanel').addEventListener('click',()=>document.getElementById('panel').classList.remove('open'));
 
+/* Re-apply a language the visitor chose on an earlier page before
+   drawing anything, so they never see a flash of English. */
+SiteLang.apply(lang);
 renderFeatured();render();
 </script>
 </body>

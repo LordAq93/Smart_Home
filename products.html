@@ -178,6 +178,7 @@ html[dir=rtl] .panel{transform:translateX(-105%)}
 </aside>
 
 <script src="analytics.js"></script>
+<script src="site.js"></script>
 <script>
 const SLUG={ac:'smart-ac-controller.html',thermo:'zone-thermostat.html',temp:'room-temperature-sensor.html',lock:'smart-door-lock.html',gate:'gate-controller.html',intercom:'video-intercom.html',switch:'smart-wall-switch.html',dimmer:'dimmer-switch.html',plug:'smart-plug-16a.html',leak:'water-leak-sensor.html',hub:'smart-home-hub.html'};
 const CATALOG=[
@@ -233,7 +234,7 @@ const FLAG={pop:{en:'MOST ORDERED',ar:'الأكثر طلباً'},low:{en:'LOW ST
 const SPECLAB={compat:{en:'Works with',ar:'يتوافق مع'},sensor:{en:'Sensor',ar:'الحساس'},net:{en:'Connectivity',ar:'الاتصال'},size:{en:'Size',ar:'المقاس'},wiring:{en:'Wiring',ar:'التمديدات'},display:{en:'Display',ar:'الشاشة'},fits:{en:'Fits',ar:'يركّب على'},install:{en:'Installation',ar:'التركيب'},accuracy:{en:'Accuracy',ar:'الدقة'},battery:{en:'Battery',ar:'البطارية'},unlock:{en:'Unlock',ar:'طرق الفتح'},door:{en:'Door thickness',ar:'سماكة الباب'},body:{en:'Body',ar:'الجسم'},relay:{en:'Relay',ar:'الريلاي'},camera:{en:'Camera',ar:'الكاميرا'},night:{en:'Night vision',ar:'الرؤية الليلية'},power:{en:'Power',ar:'الطاقة'},neutral:{en:'Neutral wire',ar:'سلك النيوترال'},load:{en:'Load',ar:'الحمل'},manual:{en:'Manual use',ar:'يدوياً'},rating:{en:'Rating',ar:'التحمّل'},metering:{en:'Metering',ar:'قياس الاستهلاك'},offline:{en:'Offline',ar:'بدون نت'},cert:{en:'Certification',ar:'الشهادة'},alarm:{en:'Alarm',ar:'التنبيه'},height:{en:'Height',ar:'الارتفاع'},devices:{en:'Devices',ar:'عدد الأجهزة'},radios:{en:'Radios',ar:'الاتصالات'},local:{en:'Local control',ar:'التحكم المحلي'},range:{en:'Range',ar:'المدى'}};
 
 /* ---------- state + tracking ---------- */
-let lang='en',cat=new URLSearchParams(location.search).get('c')||'all',pr='any',openId=null,activeId=null;
+let lang=SiteLang.saved(),cat=new URLSearchParams(location.search).get('c')||'all',pr='any',openId=null,activeId=null;
 const stats={};CATALOG.forEach(p=>stats[p.id]={seen:0,open:0,want:0});
 const seenOnce=new Set(),reserved=new Set();
 /* Tell the shared analytics file which page this is. This page lists
@@ -367,13 +368,12 @@ document.getElementById('overlay').addEventListener('click',e=>{
 
 document.getElementById('langBtn').addEventListener('click',()=>{
  lang=lang==='en'?'ar':'en';
- document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';
- document.getElementById('langBtn').textContent=lang==='ar'?'English':'العربية';
- document.querySelectorAll('[data-en]').forEach(el=>el.innerHTML=el.dataset[lang]);
+ SiteLang.apply(lang);
  render();track('lang_switch',lang);});
 document.getElementById('panelBtn').addEventListener('click',()=>document.getElementById('panel').classList.add('open'));
 document.getElementById('closePanel').addEventListener('click',()=>document.getElementById('panel').classList.remove('open'));
 
+SiteLang.apply(lang);
 render();track('page_view',cat);
 </script>
 </body>
