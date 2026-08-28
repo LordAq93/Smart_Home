@@ -192,3 +192,17 @@ const SPECLAB={compat:{en:'Works with',ar:'يتوافق مع'},
  devices:{en:'Devices',ar:'عدد الأجهزة'},
  radios:{en:'Radios',ar:'الاتصالات'},
  local:{en:'Local control',ar:'التحكم المحلي'}};
+
+
+/* Questions that apply to every product, shown after the ones that are
+   specific to it. This used to be copied into all 11 product pages,
+   so a change to the return policy meant 11 edits. */
+const COMMON_FAQ={
+ en:[['Who installs it?','Our technician, in one visit, 250 SAR for the whole home — not per device. We call first and tell you what you actually need, which is often less than you ordered.'],
+     ['What if I move house?','Everything unclips and comes with you. Nothing here is built into the wall except the switches, and those go back to the original plate in ten minutes.'],
+     ['Does it work when the internet is down?','Routines keep running on the hub. You lose remote control from outside the house until the connection is back.'],
+     ['What is the return policy?','Fourteen days. If it changes nothing about how the house runs, we collect it and refund you.']],
+ ar:[['من يتولّى التركيب؟','فني من لدينا، في زيارة واحدة، ٢٥٠ ريالاً للمنزل كاملاً — لا لكل جهاز. ونتصل بك قبل ذلك لنخبرك بما تحتاجه فعلاً، وغالباً أقل مما طلبت.'],
+     ['ماذا لو انتقلت من المنزل؟','يُفكّ كل شيء ويأتي معك. ولا شيء مبني في الجدار سوى المفاتيح، وهذه تعود إلى الغطاء الأصلي في عشر دقائق.'],
+     ['هل يعمل عند انقطاع الإنترنت؟','تستمر الإجراءات على الوحدة المركزية، ويتوقف التحكم من خارج المنزل فقط حتى يعود الاتصال.'],
+     ['ما سياسة الإرجاع؟','أربعة عشر يوماً. وإن لم يغيّر شيئاً في طريقة تشغيل المنزل، نستلمه ونعيد إليك المبلغ.']]};
