@@ -125,7 +125,7 @@ html[dir=rtl] .panel{transform:translateX(-105%)}
   <div class="links">
     <a href="index.html" data-en="Home" data-ar="الرئيسية">Home</a>
     <a href="products.html" class="on" data-en="Products" data-ar="المنتجات">Products</a>
-    <a href="index.html#how" data-en="How it works" data-ar="كيف يشتغل">How it works</a>
+    <a href="index.html#how" data-en="How it works" data-ar="كيف يعمل">How it works</a>
     <a href="index.html#install" data-en="Installation" data-ar="التركيب">Installation</a>
   </div>
   <button class="lang" id="langBtn">العربية</button>
@@ -147,7 +147,7 @@ html[dir=rtl] .panel{transform:translateX(-105%)}
 <div class="wrap">
   <div class="grid" id="grid"></div>
   <div class="empty hidden" id="empty"></div>
-  <p class="note" data-en="<b>Installation is 250 SAR for the whole home, once.</b> Not per device. If you reserve six things and only need four, the technician says so on the call before anything ships." data-ar="<b>التركيب ٢٥٠ ريال للبيت كامل، مرة وحدة.</b> مو لكل جهاز. ولو حجزت ست قطع وتحتاج أربع بس، الفني يقول لك بالمكالمة قبل ما نشحن."><b>Installation is 250 SAR for the whole home, once.</b> Not per device. If you reserve six things and only need four, the technician says so on the call before anything ships.</p>
+  <p class="note" data-en="<b>Installation is 250 SAR for the whole home, once.</b> Not per device. If you reserve six things and only need four, the technician says so on the call before anything ships." data-ar="<b>التركيب ٢٥٠ ريالاً للمنزل كاملاً، مرة واحدة.</b> لا لكل جهاز. وإن حجزت ست قطع وكنت تحتاج أربعاً فقط، أخبرك الفني بذلك في المكالمة قبل الشحن."><b>Installation is 250 SAR for the whole home, once.</b> Not per device. If you reserve six things and only need four, the technician says so on the call before anything ships.</p>
   <footer><span>Bayt Control · Riyadh</span><span id="srcLine">source: direct</span></footer>
 </div>
 
@@ -268,7 +268,7 @@ function render(){
  }).join('');
 
  const emp=document.getElementById('empty');
- if(!list.length){emp.classList.remove('hidden');emp.textContent=L==='ar'?'ما في شي بهالفلتر. جرّب سعر أوسع.':'Nothing in that range. Try a wider price filter.';}
+ if(!list.length){emp.classList.remove('hidden');emp.textContent=L==='ar'?'لا توجد نتائج ضمن هذه التصفية. جرّب نطاقاً سعرياً أوسع.':'Nothing in that range. Try a wider price filter.';}
  else emp.classList.add('hidden');
 
  document.querySelectorAll('.pcard').forEach(c=>io.observe(c));
