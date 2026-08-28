@@ -251,6 +251,7 @@ html[dir=rtl] .panel{transform:translateX(-105%)}
   <div class="panel-foot">Remove before running traffic. Events push to <b>window.dataLayer</b>. Watch <b>begin_checkout ÷ view_item</b> — that ratio is your real demand signal.</div>
 </aside>
 
+<script src="analytics.js"></script>
 <script>
 /* ---------- catalog ---------- */
 const CATALOG=[
@@ -341,23 +342,24 @@ const APPLIANCES=[
 
 /* ---------- state ---------- */
 const SLUG={ac:'smart-ac-controller.html',thermo:'zone-thermostat.html',temp:'room-temperature-sensor.html',lock:'smart-door-lock.html',gate:'gate-controller.html',intercom:'video-intercom.html',switch:'smart-wall-switch.html',dimmer:'dimmer-switch.html',plug:'smart-plug-16a.html',leak:'water-leak-sensor.html',hub:'smart-home-hub.html'};
-const qs=new URLSearchParams(location.search);
 let P=CATALOG.find(p=>p.id==='temp');
 let lang='en',qty=1,opt=0,cart=[],appl=0,code='';
-const started=Date.now();
-window.dataLayer=window.dataLayer||[];
 const FUNNEL=['view_item','variant_select','demo_used','add_to_cart','begin_checkout','intent_captured'];
 const hits=new Set();
-function track(n,d){const t=((Date.now()-started)/1000).toFixed(1)+'s';
- window.dataLayer.push({event:n,product:P.id,detail:d||null,page:'pdp'});
- const r=document.createElement('div');
- r.innerHTML='<span class="t">'+t+'</span><span class="e">'+n+(d?' <span style="color:var(--slate)">'+d+'</span>':'')+'</span>';
- document.getElementById('log').prepend(r);
- if(FUNNEL.includes(n)){hits.add(n);drawFunnel();}}
+
+/* Tell the shared analytics file which page this is and which product
+   it is about, so that every event it records carries both. */
+Analytics.page='pdp';
+Analytics.product=P.id;
+
+/* The shared file calls this after each event. Ticking off the funnel
+   is this page's own business, so it stays here. */
+window.onTrack=function(record){
+ if(FUNNEL.includes(record.event)){hits.add(record.event);drawFunnel();}
+};
 function drawFunnel(){document.getElementById('funnel').innerHTML=FUNNEL.map(f=>
  '<div class="'+(hits.has(f)?'hit':'')+'"><span>'+f+'</span><span>'+(hits.has(f)?'✓':'—')+'</span></div>').join('');}
-const src=qs.get('utm_source')||'direct';
-document.getElementById('srcLine').textContent='source: '+src;
+document.getElementById('srcLine').textContent='source: '+Analytics.source;
 const T=(o)=>lang==='ar'?o.ar:o.en;
 
 function unitPrice(){
@@ -543,7 +545,7 @@ document.getElementById('langBtn').addEventListener('click',()=>{
 document.getElementById('panelBtn').addEventListener('click',()=>document.getElementById('panel').classList.add('open'));
 document.getElementById('closePanel').addEventListener('click',()=>document.getElementById('panel').classList.remove('open'));
 
-render();drawFunnel();track('view_item',P.id+' / '+src);
+render();drawFunnel();track('view_item');
 </script>
 </body>
 </html>

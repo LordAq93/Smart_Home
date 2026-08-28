@@ -174,15 +174,11 @@ html[dir=rtl] .panel{transform:translateX(-105%)}
     <div id="board"></div>
     <div class="log" id="log"></div>
   </div>
-  <div class="panel-foot">Ranked by weighted score: <b>seen ×1, opened ×4, reserved ×20</b>. This panel is one session only — real cross-visitor numbers come from GA4 or the ENDPOINT constant at the top of the script.</div>
+  <div class="panel-foot">Ranked by weighted score: <b>seen ×1, opened ×4, reserved ×20</b>. This panel is one session only — real cross-visitor numbers come from GA4, set up in analytics.js.</div>
 </aside>
 
+<script src="analytics.js"></script>
 <script>
-/* ==== SET THIS to collect real data across visitors ====
-   Paste a Google Apps Script web-app URL, Formspree, or your own endpoint.
-   Leave empty and events stay in the browser + dataLayer only. */
-const ENDPOINT = "";
-
 const SLUG={ac:'smart-ac-controller.html',thermo:'zone-thermostat.html',temp:'room-temperature-sensor.html',lock:'smart-door-lock.html',gate:'gate-controller.html',intercom:'video-intercom.html',switch:'smart-wall-switch.html',dimmer:'dimmer-switch.html',plug:'smart-plug-16a.html',leak:'water-leak-sensor.html',hub:'smart-home-hub.html'};
 const CATALOG=[
  {id:'ac',g:'❄',c:'climate',price:349,was:449,flag:'pop',
@@ -240,22 +236,18 @@ const SPECLAB={compat:{en:'Works with',ar:'يتوافق مع'},sensor:{en:'Senso
 let lang='en',cat=new URLSearchParams(location.search).get('c')||'all',pr='any',openId=null,activeId=null;
 const stats={};CATALOG.forEach(p=>stats[p.id]={seen:0,open:0,want:0});
 const seenOnce=new Set(),reserved=new Set();
-const started=Date.now();
-window.dataLayer=window.dataLayer||[];
-const src=new URLSearchParams(location.search).get('utm_source')||'direct';
-document.getElementById('srcLine').textContent='source: '+src;
+/* Tell the shared analytics file which page this is. This page lists
+   many products rather than being about one, so Analytics.product
+   stays null and each call names its own product instead. */
+Analytics.page='list';
 
-function track(name,pid,extra){
- const payload={event:name,product:pid||null,source:src,t:Math.round((Date.now()-started)/1000),detail:extra||null};
- window.dataLayer.push(payload);
- if(ENDPOINT){
-  try{fetch(ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(payload)});}catch(e){}
- }
- const r=document.createElement('div');
- r.innerHTML='<span class="t">'+payload.t+'s</span><span class="e">'+name+(pid?' <span style="color:var(--slate)">'+pid+'</span>':'')+'</span>';
- document.getElementById('log').prepend(r);
+document.getElementById('srcLine').textContent='source: '+Analytics.source;
+
+/* The shared file calls this after each event. Redrawing the ranking
+   board is this page's own business, so it stays here. */
+window.onTrack=function(){
  drawBoard();
-}
+};
 function drawBoard(){
  const rows=CATALOG.map(p=>{
   const s=stats[p.id];return{id:p.id,n:p[lang][0],s:s.seen,o:s.open,w:s.want,score:s.seen+s.open*4+s.want*20};
@@ -272,7 +264,7 @@ const io=new IntersectionObserver(es=>{
  es.forEach(e=>{
   if(e.isIntersecting){
    const id=e.target.dataset.id;
-   if(!seenOnce.has(id)){seenOnce.add(id);stats[id].seen++;track('product_seen',id);}
+   if(!seenOnce.has(id)){seenOnce.add(id);stats[id].seen++;track('product_seen',null,id);}
   }});
 },{threshold:.6});
 
@@ -335,7 +327,7 @@ function render(){
 document.addEventListener('click',e=>{
  const ex=e.target.closest('[data-x]');
  if(ex){const id=ex.dataset.x;
-  if(openId===id){openId=null;}else{openId=id;stats[id].open++;track('product_opened',id);}
+  if(openId===id){openId=null;}else{openId=id;stats[id].open++;track('product_opened',null,id);}
   render();return;}
  const w=e.target.closest('[data-w]');
  if(w){const id=w.dataset.w;
@@ -346,28 +338,28 @@ document.addEventListener('click',e=>{
   document.getElementById('formView').classList.remove('hidden');
   document.getElementById('okView').classList.add('hidden');
   document.getElementById('overlay').classList.add('show');
-  track('reserve_opened',id);return;}
+  track('reserve_opened',null,id);return;}
  const m=e.target.closest('[data-m]');
- if(m){track('to_full_page',m.dataset.m);return;}
+ if(m){track('to_full_page',null,m.dataset.m);return;}
  const cc=e.target.closest('[data-c]');
- if(cc){cat=cc.dataset.c;track('filter_room',null,cat);render();return;}
+ if(cc){cat=cc.dataset.c;track('filter_room',cat);render();return;}
  const pc=e.target.closest('[data-p]');
- if(pc){pr=pc.dataset.p;track('filter_price',null,pr);render();return;}
+ if(pc){pr=pc.dataset.p;track('filter_price',pr);render();return;}
 });
 
 document.getElementById('mSubmit').addEventListener('click',()=>{
  const n=document.getElementById('mName').value.trim();
  const ph=document.getElementById('mPhone').value.trim();
  if(!n||ph.length<9){alert(lang==='ar'?'اكتب اسمك ورقمك.':'Add your name and number.');
-  track('reserve_invalid',activeId);return;}
+  track('reserve_invalid',null,activeId);return;}
  reserved.add(activeId);stats[activeId].want++;
- track('reserved',activeId,document.getElementById('mWhen').value);
+ track('reserved',document.getElementById('mWhen').value,activeId);
  document.getElementById('formView').classList.add('hidden');
  document.getElementById('okView').classList.remove('hidden');
  render();
 });
 document.getElementById('mClose').addEventListener('click',()=>{
- track('reserve_abandoned',activeId);
+ track('reserve_abandoned',null,activeId);
  document.getElementById('overlay').classList.remove('show');});
 document.getElementById('okClose').addEventListener('click',()=>document.getElementById('overlay').classList.remove('show'));
 document.getElementById('overlay').addEventListener('click',e=>{
@@ -378,11 +370,11 @@ document.getElementById('langBtn').addEventListener('click',()=>{
  document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';
  document.getElementById('langBtn').textContent=lang==='ar'?'English':'العربية';
  document.querySelectorAll('[data-en]').forEach(el=>el.innerHTML=el.dataset[lang]);
- render();track('lang_switch',null,lang);});
+ render();track('lang_switch',lang);});
 document.getElementById('panelBtn').addEventListener('click',()=>document.getElementById('panel').classList.add('open'));
 document.getElementById('closePanel').addEventListener('click',()=>document.getElementById('panel').classList.remove('open'));
 
-render();track('page_view',null,cat);
+render();track('page_view',cat);
 </script>
 </body>
 </html>

@@ -239,6 +239,7 @@ html[dir=rtl] .panel{transform:translateX(-105%)}
   <div class="panel-foot">Remove before running traffic. Events push to <b>window.dataLayer</b>. The number to watch here is <b>home → products</b> click-through.</div>
 </aside>
 
+<script src="analytics.js"></script>
 <script>
 const SLUG={ac:'smart-ac-controller.html',thermo:'zone-thermostat.html',temp:'room-temperature-sensor.html',lock:'smart-door-lock.html',gate:'gate-controller.html',intercom:'video-intercom.html',switch:'smart-wall-switch.html',dimmer:'dimmer-switch.html',plug:'smart-plug-16a.html',leak:'water-leak-sensor.html',hub:'smart-home-hub.html'};
 const CATALOG=[
@@ -251,15 +252,20 @@ const CATALOG=[
 ];
 
 const started=Date.now();let events=0,maxScroll=0,lang='en';
-window.dataLayer=window.dataLayer||[];
-function track(n,d){events++;const t=((Date.now()-started)/1000).toFixed(1)+'s';
- window.dataLayer.push({event:n,detail:d||null,page:'home'});
- const r=document.createElement('div');
- r.innerHTML='<span class="t">'+t+'</span><span class="e">'+n+(d?' <span style="color:var(--slate)">'+d+'</span>':'')+'</span>';
- document.getElementById('log').prepend(r);document.getElementById('sEvents').textContent=events;}
-const src=new URLSearchParams(location.search).get('utm_source')||'direct';
-document.getElementById('srcLine').textContent='source: '+src;
-track('page_view',src);
+
+/* Tell the shared analytics file which page this is. There is no one
+   product here, so Analytics.product stays null. */
+Analytics.page='home';
+
+/* The shared file calls this after each event. Counting them on screen
+   is this page's own business, so it stays here. */
+window.onTrack=function(){
+ events++;
+ document.getElementById('sEvents').textContent=events;
+};
+
+document.getElementById('srcLine').textContent='source: '+Analytics.source;
+track('page_view');
 let ticking=false;
 addEventListener('scroll',()=>{if(ticking)return;ticking=true;requestAnimationFrame(()=>{
  const d=Math.min(100,Math.round((scrollY+innerHeight)/document.body.scrollHeight*100));
