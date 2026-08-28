@@ -79,6 +79,7 @@ section{padding:84px 0;border-top:1px solid var(--line)}
 .pcard{background:var(--deep);border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:9px;transition:border-color .2s,transform .2s}
 .pcard:hover{border-color:var(--cool-dim);transform:translateY(-3px)}
 .pcard .g{font-size:24px;color:var(--cool)}
+.pcard .shot{width:100%;aspect-ratio:16/10;object-fit:contain;background:#061a1b;border-radius:11px;margin-bottom:4px}
 .pcard h3{font-size:17px;letter-spacing:-.01em}
 .pcard p{font-size:14px;color:var(--slate);flex:1}
 .prow{display:flex;justify-content:space-between;align-items:baseline;margin-top:6px}
@@ -273,7 +274,8 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-ev]');if(
 
 function renderFeatured(){
  document.getElementById('featured').innerHTML=CATALOG.filter(p=>p.featured).map(p=>
-  '<a class="pcard" href="'+SLUG[p.id]+'" data-ev="product_'+p.id+'"><span class="g">'+p.g+'</span>'+
+  '<a class="pcard" href="'+SLUG[p.id]+'" data-ev="product_'+p.id+'">'+
+  '<img class="shot" src="'+p.img+'" alt="" loading="lazy">'+
   '<h3>'+p[lang][0]+'</h3><p>'+p[lang][1]+'</p>'+
   '<div class="prow"><span class="price">'+p.price+' SAR</span><span class="arrow">→</span></div></a>').join('');
 }

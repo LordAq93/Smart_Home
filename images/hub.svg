@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+<defs>
+<linearGradient id="b" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#16383a"/><stop offset="1" stop-color="#0a1f21"/></linearGradient>
+<filter id="g" x="-50%" y="-50%" width="200%" height="200%">
+<feGaussianBlur stdDeviation="6" result="x"/><feMerge><feMergeNode in="x"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<style>
+.bd{fill:url(#b);stroke:#3c6d6b;stroke-width:2}
+.ac{fill:none;stroke:#4FB8A8;stroke-width:2.5;stroke-linecap:round}
+.dim{fill:none;stroke:#2E7A70;stroke-width:2;stroke-linecap:round}
+.lt{fill:#E8F1EE;opacity:.86}
+.sl{fill:#7E9895}
+.am{fill:#E8A33D;filter:url(#g)}
+.tl{fill:#4FB8A8}
+.tx{fill:#E8F1EE;font-family:ui-monospace,monospace;font-weight:500}
+</style>
+
+<rect class="bd" x="146" y="112" width="108" height="108" rx="26"/>
+<circle cx="200" cy="166" r="17" fill="#061a1b" stroke="#4FB8A8" stroke-width="2.5"/>
+<circle cx="200" cy="166" r="6" class="tl"/>
+<path class="ac" d="M258 138a56 56 0 0 1 0 56" opacity=".85"/>
+<path class="dim" d="M276 124a80 80 0 0 1 0 84"/>
+<path class="ac" d="M142 138a56 56 0 0 0 0 56" opacity=".85"/>
+<path class="dim" d="M124 124a80 80 0 0 0 0 84"/>
+<circle cx="200" cy="204" r="3.5" class="am"/>
+</svg>

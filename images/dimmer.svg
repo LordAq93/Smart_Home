@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+<defs>
+<linearGradient id="b" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#16383a"/><stop offset="1" stop-color="#0a1f21"/></linearGradient>
+<filter id="g" x="-50%" y="-50%" width="200%" height="200%">
+<feGaussianBlur stdDeviation="6" result="x"/><feMerge><feMergeNode in="x"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<style>
+.bd{fill:url(#b);stroke:#3c6d6b;stroke-width:2}
+.ac{fill:none;stroke:#4FB8A8;stroke-width:2.5;stroke-linecap:round}
+.dim{fill:none;stroke:#2E7A70;stroke-width:2;stroke-linecap:round}
+.lt{fill:#E8F1EE;opacity:.86}
+.sl{fill:#7E9895}
+.am{fill:#E8A33D;filter:url(#g)}
+.tl{fill:#4FB8A8}
+.tx{fill:#E8F1EE;font-family:ui-monospace,monospace;font-weight:500}
+</style>
+
+<rect class="bd" x="122" y="70" width="156" height="160" rx="16"/>
+<circle cx="200" cy="150" r="46" fill="#061a1b" stroke="#2E7A70" stroke-width="2"/>
+<path class="ac" d="M167 183a46 46 0 0 1 0-66" stroke-width="4"/>
+<path d="M200 150l0-30" stroke="#E8F1EE" stroke-width="3" stroke-linecap="round" fill="none" transform="rotate(-38 200 150)"/>
+<circle cx="200" cy="150" r="7" class="tl"/>
+<g class="sl"><circle cx="152" cy="104" r="2.4"/><circle cx="248" cy="104" r="2.4"/><circle cx="152" cy="196" r="2.4"/></g>
+</svg>

@@ -55,6 +55,7 @@ html[dir=rtl] .flab{letter-spacing:0}
 .pcard:hover{border-color:var(--cool-dim)}
 .pcard.open{border-color:var(--cool)}
 .pcard .g{font-size:26px;color:var(--cool)}
+.pcard .shot{width:100%;aspect-ratio:16/10;object-fit:contain;background:#061a1b;border-radius:11px;margin-bottom:4px}
 .pcard .cat{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--cool-dim)}
 html[dir=rtl] .pcard .cat{letter-spacing:0}
 .pcard h3{font-size:18px;letter-spacing:-.015em}
@@ -251,7 +252,8 @@ function render(){
   const open=openId===p.id, done=reserved.has(p.id);
   return '<div class="pcard'+(open?' open':'')+'" data-id="'+p.id+'">'+
    (p.flag?'<span class="flag '+p.flag+'">'+FLAG[p.flag][L]+'</span>':'')+
-   '<span class="g">'+p.g+'</span><span class="cat">'+CATNAME[p.c][L]+'</span>'+
+   '<img class="shot" src="'+p.img+'" alt="" loading="lazy">'+
+   '<span class="cat">'+CATNAME[p.c][L]+'</span>'+
    '<h3><a href="'+SLUG[p.id]+'" data-m="'+p.id+'">'+p[L][0]+'</a></h3><p>'+p[L][1]+'</p>'+
    '<div class="prow"><span class="price">'+p.price+' SAR'+(p.was?'<s>'+p.was+'</s>':'')+'</span>'+
    '<button class="expand" data-x="'+p.id+'">'+(open?(L==='ar'?'إخفاء ▲':'Hide ▲'):(L==='ar'?'التفاصيل ▼':'Details ▼'))+'</button></div>'+

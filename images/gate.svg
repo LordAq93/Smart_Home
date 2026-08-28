@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+<defs>
+<linearGradient id="b" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#16383a"/><stop offset="1" stop-color="#0a1f21"/></linearGradient>
+<filter id="g" x="-50%" y="-50%" width="200%" height="200%">
+<feGaussianBlur stdDeviation="6" result="x"/><feMerge><feMergeNode in="x"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<style>
+.bd{fill:url(#b);stroke:#3c6d6b;stroke-width:2}
+.ac{fill:none;stroke:#4FB8A8;stroke-width:2.5;stroke-linecap:round}
+.dim{fill:none;stroke:#2E7A70;stroke-width:2;stroke-linecap:round}
+.lt{fill:#E8F1EE;opacity:.86}
+.sl{fill:#7E9895}
+.am{fill:#E8A33D;filter:url(#g)}
+.tl{fill:#4FB8A8}
+.tx{fill:#E8F1EE;font-family:ui-monospace,monospace;font-weight:500}
+</style>
+<path class="dim" d="M104 226h192" stroke-width="3"/>
+<rect x="150" y="126" width="146" height="92" rx="6" fill="url(#b)" stroke="#4FB8A8" stroke-width="2"/>
+<path class="ac" d="M172 134v76M196 134v76M220 134v76M244 134v76M268 134v76" opacity=".7"/>
+<path class="ac" d="M150 150h146M150 196h146" opacity=".45"/>
+<circle cx="176" cy="230" r="7" class="dim"/><circle cx="270" cy="230" r="7" class="dim"/>
+<rect class="bd" x="88" y="140" width="50" height="66" rx="10"/>
+<circle cx="113" cy="168" r="8" fill="none" stroke="#4FB8A8" stroke-width="2"/>
+<circle cx="113" cy="190" r="4" class="am"/>
+<path class="ac" d="M113 140v-26M100 114h26"/>
+<path class="dim" d="M300 158a30 30 0 0 1 0 30" opacity=".7"/>
+</svg>

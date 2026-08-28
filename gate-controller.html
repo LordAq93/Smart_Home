@@ -37,7 +37,7 @@ html[dir=rtl] .crumb{letter-spacing:0}
 .crumb a:hover{color:var(--mist)}
 .pdp{display:grid;grid-template-columns:1.05fr 1fr;gap:58px;align-items:start;padding-bottom:70px}
 .stage{background:var(--deep);border:1px solid var(--line);border-radius:20px;aspect-ratio:1/1;display:grid;place-items:center;position:relative;overflow:hidden}
-.stage .glyph{font-size:clamp(90px,16vw,150px);color:var(--cool);opacity:.9}
+.stage img{width:96%;height:96%;object-fit:contain}
 .ph-tag{position:absolute;inset-block-start:14px;inset-inline-start:14px;font-family:var(--mono);font-size:10px;color:var(--slate);border:1px dashed var(--line);padding:5px 9px;border-radius:6px}
 .thumbs{display:flex;gap:10px;margin-top:12px}
 .thumb{flex:1;aspect-ratio:1/1;background:var(--deep);border:1px solid var(--line);border-radius:11px;display:grid;place-items:center;color:var(--slate);font-family:var(--mono);font-size:10px;transition:.2s}
@@ -161,7 +161,7 @@ html[dir=rtl] .panel{transform:translateX(-105%)}
   <div class="crumb" id="crumb"></div>
   <div class="pdp">
     <div>
-      <div class="stage"><span class="ph-tag">REPLACE WITH REAL PHOTO</span><span class="glyph" id="glyph">❄</span></div>
+      <div class="stage"><span class="ph-tag">ILLUSTRATION</span><img id="shot" alt=""></div>
       <div class="thumbs">
         <button class="thumb" aria-pressed="true" data-ev="gallery_front">FRONT</button>
         <button class="thumb" data-ev="gallery_back">BACK</button>
@@ -310,7 +310,10 @@ function render(){
  document.title=P[L][0]+' — Bayt Control';
  document.getElementById('crumb').innerHTML=
   '<a href="index.html">'+(L==='ar'?'الرئيسية':'HOME')+'</a> / <a href="products.html?c='+P.c+'">'+CATNAME[P.c][L]+'</a> / '+P[L][0];
- document.getElementById('glyph').textContent=P.g;
+ const shot=document.getElementById('shot');
+ shot.src=P.img;
+ /* Read aloud to blind visitors, and shown if the file fails to load. */
+ shot.alt=P[L][0];
  document.getElementById('pCat').textContent=CATNAME[P.c][L];
  document.getElementById('pTitle').textContent=P[L][0];
  document.getElementById('pBlurb').textContent=P[L][2];
