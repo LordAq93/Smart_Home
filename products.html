@@ -177,61 +177,17 @@ html[dir=rtl] .panel{transform:translateX(-105%)}
   <div class="panel-foot">Ranked by weighted score: <b>seen ×1, opened ×4, reserved ×20</b>. This panel is one session only — real cross-visitor numbers come from GA4, set up in analytics.js.</div>
 </aside>
 
+<script src="catalog.js"></script>
 <script src="analytics.js"></script>
 <script src="site.js"></script>
 <script>
-const SLUG={ac:'smart-ac-controller.html',thermo:'zone-thermostat.html',temp:'room-temperature-sensor.html',lock:'smart-door-lock.html',gate:'gate-controller.html',intercom:'video-intercom.html',switch:'smart-wall-switch.html',dimmer:'dimmer-switch.html',plug:'smart-plug-16a.html',leak:'water-leak-sensor.html',hub:'smart-home-hub.html'};
-const CATALOG=[
- {id:'ac',g:'❄',c:'climate',price:349,was:449,flag:'pop',
-  en:['AC controller','Learns any split-unit remote. Reads room temperature and humidity itself.'],
-  ar:['متحكّم المكيّف','يتعلّم ريموت أي مكيّف سبليت ويقرأ حرارة ورطوبة الغرفة بنفسه.'],
-  spec:[['compat','Any IR split unit'],['sensor','Temp ±0.3°C'],['net','Wi-Fi 2.4GHz'],['size','62 × 62 × 18 mm']]},
- {id:'thermo',g:'◉',c:'climate',price:429,
-  en:['Zone thermostat','Wired replacement for central AC. One per floor, so upstairs stops cooling an empty room.'],
-  ar:['ثرموستات المناطق','بديل سلكي للتكييف المركزي. واحد لكل دور، عشان الدور العلوي ما يبرّد غرفة فاضية.'],
-  spec:[['wiring','24V, 4–6 wire'],['display','2.4" touch'],['fits','86mm back box'],['install','Technician required']]},
- {id:'temp',g:'△',c:'climate',price:59,
-  en:['Room temperature sensor','Lets the AC read the room you sleep in, not the hallway.'],
-  ar:['حساس حرارة الغرفة','يخلي المكيف يقرأ الغرفة اللي تنام فيها، مو الممر.'],
-  spec:[['accuracy','±0.3°C'],['battery','CR2450, ~18 months'],['net','Bluetooth to hub'],['size','40 × 40 × 11 mm']]},
- {id:'lock',g:'⌘',c:'security',price:500,was:650,flag:'pop',
-  en:['Smart door lock','Fingerprint, code, phone or the original key. Fits most villa doors.'],
-  ar:['قفل الباب الذكي','بصمة أو رمز أو جوال أو المفتاح الأصلي. يناسب أغلب أبواب الفلل.'],
-  spec:[['unlock','Fingerprint · code · app · key'],['battery','4× AA, ~10 months'],['door','38 – 65 mm'],['body','Zinc alloy, IP54']]},
- {id:'gate',g:'⊟',c:'security',price:449,
-  en:['Gate controller','Wires into the existing gate motor. Open from the car, or automatically on arrival.'],
-  ar:['متحكّم البوابة','يتوصّل مع محرك البوابة الحالي. افتح من السيارة أو تلقائياً عند الوصول.'],
-  spec:[['compat','Most 220V gate motors'],['relay','Dry contact, 2 channel'],['net','Wi-Fi 2.4GHz'],['install','Technician required']]},
- {id:'intercom',g:'▣',c:'security',price:699,flag:'low',
-  en:['Video intercom','See and talk to whoever is at the gate, from anywhere. Keeps the same wiring.'],
-  ar:['إنتركم بالفيديو','شوف وكلّم اللي عند البوابة من أي مكان. ويستخدم نفس التمديدات.'],
-  spec:[['camera','1080p, 140°'],['night','IR to 5 m'],['power','Existing 2-wire'],['net','Wi-Fi 2.4GHz']]},
- {id:'switch',g:'◫',c:'lighting',price:189,
-  en:['Wall switch, 3 gang','Replaces the plate, not the wiring. Still works by hand if the internet drops.'],
-  ar:['مفتاح جداري ٣ أزرار','يستبدل الغطاء، مو التمديدات. ويشتغل باليد لو انقطع النت.'],
-  spec:[['fits','86mm back box'],['neutral','Required'],['load','10A per gang'],['manual','Always works']]},
- {id:'dimmer',g:'◐',c:'lighting',price:229,
-  en:['Dimmer switch','For the majlis. Warm and full at Maghrib, low after Isha, untouched.'],
-  ar:['مفتاح تعتيم','للمجلس. دافي وكامل عند المغرب، وخافت بعد العشاء، بدون ما أحد يلمسه.'],
-  spec:[['fits','86mm back box'],['load','300W dimmable LED'],['range','1 – 100%'],['neutral','Required']]},
- {id:'plug',g:'◈',c:'power',price:89,was:129,flag:'pop',
-  en:['Smart plug 16A','Switches from your phone and counts every watt. Handles a freezer or window AC.'],
-  ar:['فيشة ذكية ١٦ أمبير','تتحكم فيها من جوالك وتحسب كل واط. تتحمّل فريزر أو مكيف شباك.'],
-  spec:[['rating','16A / 3680W, Type G'],['metering','Yes, ±1%'],['offline','Schedules keep running'],['cert','SASO marked']]},
- {id:'leak',g:'◌',c:'power',price:79,
-  en:['Water leak sensor','Sits flat under the sink or behind the washing machine. Alerts on the first drop.'],
-  ar:['حساس تسريب المياه','يوضع تحت المغسلة أو خلف الغسالة. ينبّهك من أول قطرة.'],
-  spec:[['battery','CR2032, ~2 years'],['alarm','75dB + app'],['height','13 mm'],['net','Bluetooth to hub']]},
- {id:'hub',g:'⬡',c:'power',price:299,
-  en:['Hub','One per home. Keeps every routine running locally when the connection drops.'],
-  ar:['الوحدة المركزية','وحدة واحدة للبيت. تخلي كل الروتينات تشتغل محلياً لو انقطع الاتصال.'],
-  spec:[['devices','Up to 64'],['radios','Wi-Fi, BT, Zigbee'],['local','Runs without internet'],['size','96 × 96 × 24 mm']]}
-];
+
+
 const CATS=[{k:'all',en:'All',ar:'الكل'},{k:'climate',en:'Cooling',ar:'التكييف'},{k:'security',en:'Doors & gate',ar:'الأبواب والبوابة'},{k:'lighting',en:'Lighting',ar:'الإضاءة'},{k:'power',en:'Power & safety',ar:'الكهرباء والسلامة'}];
 const PRICES=[{k:'any',en:'Any',ar:'الكل'},{k:'u100',en:'Under 100',ar:'أقل من ١٠٠'},{k:'100-400',en:'100 – 400',ar:'١٠٠ – ٤٠٠'},{k:'o400',en:'Over 400',ar:'أكثر من ٤٠٠'}];
-const CATNAME={climate:{en:'COOLING',ar:'التكييف'},security:{en:'DOORS & GATE',ar:'الأبواب والبوابة'},lighting:{en:'LIGHTING',ar:'الإضاءة'},power:{en:'POWER & SAFETY',ar:'الكهرباء والسلامة'}};
+
 const FLAG={pop:{en:'MOST ORDERED',ar:'الأكثر طلباً'},low:{en:'LOW STOCK',ar:'كمية محدودة'}};
-const SPECLAB={compat:{en:'Works with',ar:'يتوافق مع'},sensor:{en:'Sensor',ar:'الحساس'},net:{en:'Connectivity',ar:'الاتصال'},size:{en:'Size',ar:'المقاس'},wiring:{en:'Wiring',ar:'التمديدات'},display:{en:'Display',ar:'الشاشة'},fits:{en:'Fits',ar:'يركّب على'},install:{en:'Installation',ar:'التركيب'},accuracy:{en:'Accuracy',ar:'الدقة'},battery:{en:'Battery',ar:'البطارية'},unlock:{en:'Unlock',ar:'طرق الفتح'},door:{en:'Door thickness',ar:'سماكة الباب'},body:{en:'Body',ar:'الجسم'},relay:{en:'Relay',ar:'الريلاي'},camera:{en:'Camera',ar:'الكاميرا'},night:{en:'Night vision',ar:'الرؤية الليلية'},power:{en:'Power',ar:'الطاقة'},neutral:{en:'Neutral wire',ar:'سلك النيوترال'},load:{en:'Load',ar:'الحمل'},manual:{en:'Manual use',ar:'يدوياً'},rating:{en:'Rating',ar:'التحمّل'},metering:{en:'Metering',ar:'قياس الاستهلاك'},offline:{en:'Offline',ar:'بدون نت'},cert:{en:'Certification',ar:'الشهادة'},alarm:{en:'Alarm',ar:'التنبيه'},height:{en:'Height',ar:'الارتفاع'},devices:{en:'Devices',ar:'عدد الأجهزة'},radios:{en:'Radios',ar:'الاتصالات'},local:{en:'Local control',ar:'التحكم المحلي'},range:{en:'Range',ar:'المدى'}};
+
 
 /* ---------- state + tracking ---------- */
 let lang=SiteLang.saved(),cat=new URLSearchParams(location.search).get('c')||'all',pr='any',openId=null,activeId=null;
@@ -272,6 +228,15 @@ const io=new IntersectionObserver(es=>{
 const inPrice=p=>pr==='any'||(pr==='u100'&&p<100)||(pr==='100-400'&&p>=100&&p<=400)||(pr==='o400'&&p>400);
 const T=o=>lang==='ar'?o.ar:o.en;
 
+/* These cards are narrow, so a few spec labels have a clipped wording
+   just for here. Fall back to the full label when there is no short
+   one. */
+function specLabel(key,L){
+ const lab=SPECLAB[key];
+ if(!lab) return key;
+ return lab[L==='ar'?'shortAr':'shortEn'] || lab[L];
+}
+
 function render(){
  const L=lang;
  document.getElementById('crumb').textContent=L==='ar'?'الرئيسية / المنتجات':'HOME / PRODUCTS';
@@ -290,7 +255,7 @@ function render(){
    '<div class="prow"><span class="price">'+p.price+' SAR'+(p.was?'<s>'+p.was+'</s>':'')+'</span>'+
    '<button class="expand" data-x="'+p.id+'">'+(open?(L==='ar'?'إخفاء ▲':'Hide ▲'):(L==='ar'?'التفاصيل ▼':'Details ▼'))+'</button></div>'+
    (open?'<div class="detail"><dl>'+p.spec.map(s=>
-     '<div><dt>'+(SPECLAB[s[0]]?SPECLAB[s[0]][L]:s[0])+'</dt><dd>'+s[1]+'</dd></div>').join('')+'</dl>'+
+     '<div><dt>'+specLabel(s[0],L)+'</dt><dd>'+s[1]+'</dd></div>').join('')+'</dl>'+
     '<div class="acts">'+
     '<button class="want'+(done?' done':'')+'" data-w="'+p.id+'">'+
       (done?(L==='ar'?'✓ محجوز':'✓ Reserved'):(L==='ar'?'احجز واحد':'Reserve one'))+'</button>'+

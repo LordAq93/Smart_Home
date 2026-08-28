@@ -52,6 +52,7 @@ html[dir=rtl] .eyebrow{letter-spacing:0}
 .tag{background:rgba(232,163,61,.15);color:var(--amber);font-family:var(--mono);font-size:11px;padding:4px 9px;border-radius:5px}
 .vatline{font-family:var(--mono);font-size:11.5px;color:var(--slate);margin-bottom:26px}
 .opt{margin-bottom:22px}
+.optgroup+.optgroup{margin-block-start:16px}
 .optlabel{font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--slate);margin-bottom:10px;display:flex;justify-content:space-between;gap:14px}
 html[dir=rtl] .optlabel{letter-spacing:0}
 .optlabel span:last-child{color:var(--mist);text-transform:none;letter-spacing:0}
@@ -180,10 +181,7 @@ html[dir=rtl] .panel{transform:translateX(-105%)}
       </div>
       <div class="vatline" id="pVat"></div>
 
-      <div class="opt hidden" id="optWrap">
-        <div class="optlabel"><span id="optName"></span><span id="optPick"></span></div>
-        <div class="chips" id="chips"></div>
-      </div>
+      <div class="opt hidden" id="optGroups"></div>
 
       <div class="qtyrow">
         <div class="qty"><button id="qMinus" aria-label="Decrease">−</button><span id="qVal">1</span><button id="qPlus" aria-label="Increase">+</button></div>
@@ -251,81 +249,13 @@ html[dir=rtl] .panel{transform:translateX(-105%)}
   <div class="panel-foot">Remove before running traffic. Events push to <b>window.dataLayer</b>. Watch <b>begin_checkout ÷ view_item</b> — that ratio is your real demand signal.</div>
 </aside>
 
+<script src="catalog.js"></script>
 <script src="analytics.js"></script>
 <script src="site.js"></script>
 <script>
-/* ---------- catalog ---------- */
-const CATALOG=[
- {id:'ac',g:'❄',c:'climate',price:349,was:449,demo:'plug',
-  en:['AC controller','Learns any split-unit remote. Reads room temperature and humidity itself, so it stops cooling an empty room.'],
-  ar:['متحكّم المكيّف','يتعلّم ريموت أي مكيّف سبليت، ويقرأ حرارة ورطوبة الغرفة بنفسه، فيوقف التبريد للغرفة الفاضية.'],
-  opt:{en:'Mounting',ar:'التركيب',items:[{en:'Stick-on',ar:'لاصق'},{en:'Wall bracket',ar:'حامل جداري'}]},
-  spec:[['compat','Any IR split unit'],['sensor','Temp ±0.3°C, humidity'],['power','USB-C, 1m cable'],['net','Wi-Fi 2.4GHz'],['range','8 m line of sight'],['size','62 × 62 × 18 mm']]},
- {id:'thermo',g:'◉',c:'climate',price:429,
-  en:['Zone thermostat','Wired replacement for a central AC thermostat. One per floor, so upstairs stops running for an empty room.'],
-  ar:['ثرموستات المناطق','بديل سلكي لثرموستات التكييف المركزي. واحد لكل دور، عشان الدور العلوي ما يشتغل لغرفة فاضية.'],
-  opt:null,
-  spec:[['wiring','24V, 4–6 wire'],['display','2.4" touch'],['sensor','Temp + occupancy'],['net','Wi-Fi 2.4GHz'],['fits','86mm back box'],['install','Technician required']]},
- {id:'temp',g:'△',c:'climate',price:59,
-  en:['Room temperature sensor','Lets the AC read the room you sleep in, not the hallway where the thermostat happens to be.'],
-  ar:['حساس حرارة الغرفة','يخلي المكيف يقرأ الغرفة اللي تنام فيها، مو الممر اللي صادف فيه الثرموستات.'],
-  opt:{en:'Pack',ar:'العبوة',items:[{en:'Single',ar:'حبة'},{en:'Pack of 3',ar:'٣ حبات',extra:'159 SAR',price:159}]},
-  spec:[['accuracy','±0.3°C'],['battery','CR2450, ~18 months'],['net','Bluetooth to hub'],['size','40 × 40 × 11 mm']]},
- {id:'lock',g:'⌘',c:'security',price:500,was:650,demo:'lock',
-  en:['Smart door lock','Fingerprint, code, phone or the original key. Fits most Saudi villa doors without changing the door itself.'],
-  ar:['قفل الباب الذكي','بصمة أو رمز أو جوال أو المفتاح الأصلي. يركّب على أغلب أبواب الفلل بدون تغيير الباب.'],
-  opt:{en:'Finish',ar:'اللون',items:[{en:'Matte black',ar:'أسود مطفي'},{en:'Brushed silver',ar:'فضي مصنفر'},{en:'Bronze',ar:'برونزي'}]},
-  spec:[['unlock','Fingerprint · code · app · key'],['prints','100'],['codes','20 permanent + temporary'],['battery','4× AA, ~10 months'],['backup','USB-C power bank'],['door','38 – 65 mm thick'],['net','Wi-Fi + Bluetooth'],['body','Zinc alloy, IP54']],
-  faq:{en:[['What if the battery dies while I am out?','It warns you in the app for weeks first. If it still runs flat, hold a power bank to the USB-C port under the handle and it opens immediately. The metal key also still works.'],
-           ['Does it survive the summer heat?','The outdoor panel is rated to 60°C. A door in direct west-facing sun can exceed that surface temperature, so we only recommend it on shaded or recessed doors.'],
-           ['Can the housekeeper get in without my phone?','Yes. Give her a code that only works Sunday to Thursday, 8am to 4pm. It stops working on its own when you end it.']],
-       ar:[['وش يصير لو خلصت البطارية وأنا برا؟','ينبّهك بالتطبيق قبلها بأسابيع. ولو خلصت، قرّب باور بانك من منفذ USB-C تحت المقبض وينفتح على طول. والمفتاح المعدني برضه يشتغل.'],
-           ['يتحمّل حر الصيف؟','اللوحة الخارجية معتمدة حتى ٦٠ درجة. الباب اللي عليه شمس غربية مباشرة ممكن يتجاوزها، لذلك ننصح فيه للأبواب المظللة فقط.'],
-           ['تقدر العاملة تدخل بدون جوالي؟','نعم. تعطيها رمز يشتغل من الأحد للخميس، ٨ص – ٤م، ويوقف بنفسه لما تنهيه.']]}},
- {id:'gate',g:'⊟',c:'security',price:449,
-  en:['Gate controller','Wires into the existing gate motor. Open from the car, or automatically when your phone reaches the street.'],
-  ar:['متحكّم البوابة','يتوصّل مع محرك البوابة الحالي. افتح من السيارة، أو تلقائياً لما جوالك يوصل الشارع.'],
-  opt:null,
-  spec:[['compat','Most 220V gate motors'],['relay','Dry contact, 2 channel'],['trigger','App · auto-arrival · code'],['net','Wi-Fi 2.4GHz'],['install','Technician required']]},
- {id:'intercom',g:'▣',c:'security',price:699,
-  en:['Video intercom','See and talk to whoever is at the gate from anywhere. Replaces the handset unit, keeps the same wiring.'],
-  ar:['إنتركم بالفيديو','شوف وكلّم اللي عند البوابة من أي مكان. يستبدل السماعة القديمة ويستخدم نفس التمديدات.'],
-  opt:{en:'Screen',ar:'الشاشة',items:[{en:'Audio only',ar:'صوت فقط',price:449,extra:'449 SAR'},{en:'With 7" screen',ar:'مع شاشة ٧ إنش'}]},
-  spec:[['camera','1080p, 140° lens'],['night','IR to 5 m'],['storage','Local SD or cloud'],['power','Existing 2-wire'],['net','Wi-Fi 2.4GHz']]},
- {id:'switch',g:'◫',c:'lighting',price:189,
-  en:['Wall switch, 3 gang','Replaces the existing plate, not the wiring. Still works by hand if the internet drops.'],
-  ar:['مفتاح جداري ٣ أزرار','يستبدل الغطاء الحالي، مو التمديدات. ويشتغل باليد عادي لو انقطع النت.'],
-  opt:{en:'Gangs',ar:'عدد الأزرار',items:[{en:'1 gang',ar:'زر واحد',price:129,extra:'129 SAR'},{en:'2 gang',ar:'زرّين',price:159,extra:'159 SAR'},{en:'3 gang',ar:'٣ أزرار'}]},
-  spec:[['fits','86mm back box'],['neutral','Required'],['load','10A per gang'],['manual','Yes, always works'],['net','Wi-Fi 2.4GHz']]},
- {id:'dimmer',g:'◐',c:'lighting',price:229,
-  en:['Dimmer switch','For the majlis. Warm and full at Maghrib, low after Isha, without anyone touching it.'],
-  ar:['مفتاح تعتيم','للمجلس. دافي وكامل عند المغرب، وخافت بعد العشاء، بدون ما أحد يلمسه.'],
-  opt:null,
-  spec:[['fits','86mm back box'],['load','300W dimmable LED'],['neutral','Required'],['range','1 – 100%'],['net','Wi-Fi 2.4GHz']]},
- {id:'plug',g:'◈',c:'power',price:89,was:129,demo:'plug',
-  en:['Smart plug 16A','A Type-G plug that switches from your phone and counts every watt behind it. Handles a freezer or a window AC, not just a lamp.'],
-  ar:['فيشة ذكية ١٦ أمبير','فيشة بريطانية تتحكم فيها من جوالك وتحسب كل واط خلفها. تتحمّل فريزر أو مكيف شباك، مو بس لمبة.'],
-  opt:{en:'Pack',ar:'العبوة',items:[{en:'Single',ar:'حبة'},{en:'Pack of 4',ar:'٤ حبات',price:299,extra:'299 SAR'},{en:'Pack of 8',ar:'٨ حبات',price:549,extra:'549 SAR'}]},
-  spec:[['rating','16A / 3680W, Type G'],['metering','Yes, ±1%'],['schedule','On/off, countdown, sunset'],['offline','Schedules keep running'],['cutoff','Automatic at 16A'],['size','54 × 54 × 72 mm'],['cert','SASO marked']],
-  faq:{en:[['Can I run a water heater on it?','Only if the heater is under 3680W and plugs in rather than being wired into the wall. Most Saudi wall-mounted heaters are hardwired — those need an electrician and a different device.'],
-           ['What happens to my schedules if the internet drops?','They keep running. The plug stores them on the device; you only lose remote control until the connection comes back.'],
-           ['Will it actually save me money?','It shows consumption honestly, which is not the same thing. Most people save by finding one appliance they did not know was running, not from the plug itself.']],
-       ar:[['أقدر أشغّل عليها سخّان؟','فقط لو السخان أقل من ٣٦٨٠ واط وله فيشة، مو موصّل مباشرة بالجدار. أغلب السخانات الجدارية في السعودية موصّلة مباشرة وتحتاج كهربائي وجهاز ثاني.'],
-           ['وش يصير للجدولة لو انقطع النت؟','تستمر تشتغل. الفيشة تحفظها داخلياً، وتفقد بس التحكم عن بعد لين يرجع الاتصال.'],
-           ['فعلاً بتوفّر علي؟','هي تعرض الاستهلاك بصدق، وهذا شي ثاني عن التوفير. أغلب الناس يوفّرون لأنهم يكتشفون جهاز شغّال وهم ما يدرون.']]}},
- {id:'leak',g:'◌',c:'power',price:79,
-  en:['Water leak sensor','Sits flat under the sink or behind the washing machine. Two-year battery, messages you on the first drop.'],
-  ar:['حساس تسريب المياه','يوضع تحت المغسلة أو خلف الغسالة. بطارية سنتين، ويرسل لك من أول قطرة.'],
-  opt:{en:'Pack',ar:'العبوة',items:[{en:'Single',ar:'حبة'},{en:'Pack of 3',ar:'٣ حبات',price:199,extra:'199 SAR'}]},
-  spec:[['battery','CR2032, ~2 years'],['alarm','75dB local + app'],['height','13 mm'],['net','Bluetooth to hub']]},
- {id:'hub',g:'⬡',c:'power',price:299,
-  en:['Hub','One per home. Keeps every routine running locally when the connection drops, and it is what everything else talks to.'],
-  ar:['الوحدة المركزية','وحدة واحدة للبيت. تخلي كل الروتينات تشتغل محلياً لو انقطع الاتصال، وهي اللي تتكلم معها بقية الأجهزة.'],
-  opt:null,
-  spec:[['devices','Up to 64'],['radios','Wi-Fi, Bluetooth, Zigbee'],['local','Routines run without internet'],['power','USB-C, 5V'],['size','96 × 96 × 24 mm']]}
-];
-const CATNAME={climate:{en:'COOLING',ar:'التكييف'},security:{en:'DOORS & GATE',ar:'الأبواب والبوابة'},lighting:{en:'LIGHTING',ar:'الإضاءة'},power:{en:'POWER & SAFETY',ar:'الكهرباء والسلامة'}};
-const SPECLAB={compat:{en:'Works with',ar:'يتوافق مع'},sensor:{en:'Sensor',ar:'الحساس'},power:{en:'Power',ar:'الطاقة'},net:{en:'Connectivity',ar:'الاتصال'},range:{en:'Range',ar:'المدى'},size:{en:'Size',ar:'المقاس'},wiring:{en:'Wiring',ar:'التمديدات'},display:{en:'Display',ar:'الشاشة'},fits:{en:'Fits',ar:'يركّب على'},install:{en:'Installation',ar:'التركيب'},accuracy:{en:'Accuracy',ar:'الدقة'},battery:{en:'Battery',ar:'البطارية'},unlock:{en:'Unlock methods',ar:'طرق الفتح'},prints:{en:'Fingerprints',ar:'البصمات'},codes:{en:'Codes',ar:'الرموز'},backup:{en:'Emergency power',ar:'طاقة الطوارئ'},door:{en:'Door thickness',ar:'سماكة الباب'},body:{en:'Body',ar:'الجسم'},relay:{en:'Relay',ar:'الريلاي'},trigger:{en:'Triggers',ar:'المشغّلات'},camera:{en:'Camera',ar:'الكاميرا'},night:{en:'Night vision',ar:'الرؤية الليلية'},storage:{en:'Storage',ar:'التخزين'},neutral:{en:'Neutral wire',ar:'سلك النيوترال'},load:{en:'Load',ar:'الحمل'},manual:{en:'Manual use',ar:'الاستخدام اليدوي'},rating:{en:'Rating',ar:'التحمّل'},metering:{en:'Energy metering',ar:'قياس الاستهلاك'},schedule:{en:'Scheduling',ar:'الجدولة'},offline:{en:'Works offline',ar:'يشتغل بدون نت'},cutoff:{en:'Overload cut-off',ar:'قطع الحمل الزائد'},cert:{en:'Certification',ar:'الشهادة'},alarm:{en:'Alarm',ar:'التنبيه'},height:{en:'Height',ar:'الارتفاع'},devices:{en:'Devices',ar:'عدد الأجهزة'},radios:{en:'Radios',ar:'الاتصالات'},local:{en:'Local control',ar:'التحكم المحلي'}};
+
+
+
 const COMMON_FAQ={
  en:[['Who installs it?','Our technician, in one visit, 250 SAR for the whole home — not per device. We call first and tell you what you actually need, which is often less than you ordered.'],
      ['What if I move house?','Everything unclips and comes with you. Nothing here is built into the wall except the switches, and those go back to the original plate in ten minutes.'],
@@ -342,9 +272,9 @@ const APPLIANCES=[
  {en:'Washing machine',ar:'غسالة',w:500,duty:0.06,note:{en:'Loud, but cheap to run.',ar:'صوتها عالي، لكن تشغيلها رخيص.'}}];
 
 /* ---------- state ---------- */
-const SLUG={ac:'smart-ac-controller.html',thermo:'zone-thermostat.html',temp:'room-temperature-sensor.html',lock:'smart-door-lock.html',gate:'gate-controller.html',intercom:'video-intercom.html',switch:'smart-wall-switch.html',dimmer:'dimmer-switch.html',plug:'smart-plug-16a.html',leak:'water-leak-sensor.html',hub:'smart-home-hub.html'};
+
 let P=CATALOG.find(p=>p.id==='thermo');
-let lang=SiteLang.saved(),qty=1,opt=0,cart=[],appl=0,code='';
+let lang=SiteLang.saved(),qty=1,cart=[],appl=0,code='';
 const FUNNEL=['view_item','variant_select','demo_used','add_to_cart','begin_checkout','intent_captured'];
 const hits=new Set();
 
@@ -363,9 +293,17 @@ function drawFunnel(){document.getElementById('funnel').innerHTML=FUNNEL.map(f=>
 document.getElementById('srcLine').textContent='source: '+Analytics.source;
 const T=(o)=>lang==='ar'?o.ar:o.en;
 
+/* One chosen item per option group. picks[0] is the choice in the
+   first group, picks[1] in the second, and so on. */
+let picks=[];
+function chosen(){return P.opts.map((g,i)=>g.items[picks[i]||0]);}
+
 function unitPrice(){
- if(P.opt&&P.opt.items[opt]&&P.opt.items[opt].price)return P.opt.items[opt].price;
- return P.price;
+ /* A group may set its own price - placement does, finish does not.
+    If more than one names a price, the last one wins. */
+ let price=P.price;
+ chosen().forEach(it=>{if(it&&it.price)price=it.price;});
+ return price;
 }
 function render(){
  const L=lang;
@@ -375,20 +313,28 @@ function render(){
  document.getElementById('glyph').textContent=P.g;
  document.getElementById('pCat').textContent=CATNAME[P.c][L];
  document.getElementById('pTitle').textContent=P[L][0];
- document.getElementById('pBlurb').textContent=P[L][1];
+ document.getElementById('pBlurb').textContent=P[L][2];
  document.getElementById('pPrice').textContent=unitPrice().toLocaleString('en-US');
  const w=document.getElementById('pWas');
- if(P.was){w.textContent=P.was.toLocaleString('en-US');w.classList.remove('hidden');}else w.classList.add('hidden');
+ /* Only show the old price when the chosen variant is still at the
+    base price. Showing "was 650" beside an 800 SAR variant would
+    read as a discount that is not being given. */
+ if(P.was&&unitPrice()===P.price){w.textContent=P.was.toLocaleString('en-US');w.classList.remove('hidden');}
+ else w.classList.add('hidden');
  document.getElementById('pTag').textContent=L==='ar'?'سعر التجربة':'PILOT PRICE';
  document.getElementById('pVat').textContent=L==='ar'?'شامل الضريبة · توصيل مجاني داخل الرياض':'VAT included · free delivery inside Riyadh';
 
- const ow=document.getElementById('optWrap');
- if(P.opt){
+ const ow=document.getElementById('optGroups');
+ if(P.opts.length){
   ow.classList.remove('hidden');
-  document.getElementById('optName').textContent=T(P.opt);
-  document.getElementById('optPick').textContent=T(P.opt.items[opt]);
-  document.getElementById('chips').innerHTML=P.opt.items.map((it,i)=>
-   '<button class="chip" data-i="'+i+'" aria-pressed="'+(i===opt)+'">'+T(it)+(it.extra?'<small>'+it.extra+'</small>':'')+'</button>').join('');
+  ow.innerHTML=P.opts.map((g,gi)=>{
+   const pick=picks[gi]||0;
+   return '<div class="optgroup">'+
+    '<div class="optlabel"><span>'+T(g)+'</span><span>'+T(g.items[pick])+'</span></div>'+
+    '<div class="chips">'+g.items.map((it,i)=>
+     '<button class="chip" data-g="'+gi+'" data-i="'+i+'" aria-pressed="'+(i===pick)+'">'+
+     T(it)+(it.extra?'<small>'+it.extra+'</small>':'')+'</button>').join('')+'</div></div>';
+  }).join('');
  } else ow.classList.add('hidden');
 
  document.getElementById('qVal').textContent=qty;
@@ -456,8 +402,10 @@ function render(){
  bind();
 }
 function bind(){
- document.querySelectorAll('#chips .chip').forEach(c=>c.addEventListener('click',()=>{
-  opt=+c.dataset.i;track('variant_select',T(P.opt.items[opt]));render();}));
+ document.querySelectorAll('#optGroups .chip').forEach(c=>c.addEventListener('click',()=>{
+  const g=+c.dataset.g;
+  picks[g]=+c.dataset.i;
+  track('variant_select',T(P.opts[g].items[picks[g]]));render();}));
 }
 
 /* meter demo */
@@ -498,7 +446,7 @@ function openCart(){
  document.getElementById('overlay').classList.add('show');
 }
 function addToCart(){
- const label=P[lang][0]+(P.opt?' · '+T(P.opt.items[opt]):'');
+ const label=P[lang][0]+(P.opts.length?' · '+chosen().map(it=>T(it)).join(' · '):'');
  cart.push({name:label,price:unitPrice(),q:qty});
  document.getElementById('cartCount').textContent=cart.reduce((s,l)=>s+l.q,0);
  track('add_to_cart',label+' ×'+qty);openCart();

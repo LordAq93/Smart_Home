@@ -239,18 +239,12 @@ html[dir=rtl] .panel{transform:translateX(-105%)}
   <div class="panel-foot">Remove before running traffic. Events push to <b>window.dataLayer</b>. The number to watch here is <b>home → products</b> click-through.</div>
 </aside>
 
+<script src="catalog.js"></script>
 <script src="analytics.js"></script>
 <script src="site.js"></script>
 <script>
-const SLUG={ac:'smart-ac-controller.html',thermo:'zone-thermostat.html',temp:'room-temperature-sensor.html',lock:'smart-door-lock.html',gate:'gate-controller.html',intercom:'video-intercom.html',switch:'smart-wall-switch.html',dimmer:'dimmer-switch.html',plug:'smart-plug-16a.html',leak:'water-leak-sensor.html',hub:'smart-home-hub.html'};
-const CATALOG=[
- {id:'ac',g:'❄',c:'climate',price:349,en:['AC controller','Learns any split-unit remote. Reads room temperature itself.'],ar:['متحكّم المكيّف','يتعلّم ريموت أي مكيّف سبليت ويقرأ حرارة الغرفة بنفسه.']},
- {id:'lock',g:'⌘',c:'security',price:500,en:['Smart door lock','Fingerprint, code, phone or the original key.'],ar:['قفل الباب الذكي','بصمة أو رمز أو جوال أو المفتاح الأصلي.']},
- {id:'plug',g:'◈',c:'power',price:89,en:['Smart plug 16A','Switches from your phone and counts every watt behind it.'],ar:['فيشة ذكية ١٦ أمبير','تتحكم فيها من جوالك وتحسب كل واط خلفها.']},
- {id:'gate',g:'⊟',c:'security',price:449,en:['Gate controller','Open the villa gate from the car, or on arrival.'],ar:['متحكّم البوابة','افتح بوابة الفيلا من السيارة أو عند الوصول.']},
- {id:'switch',g:'◫',c:'lighting',price:189,en:['Wall switch, 3 gang','Replaces the plate. Still works by hand if the internet drops.'],ar:['مفتاح جداري ٣ أزرار','يستبدل الغطاء. ويشتغل باليد لو انقطع النت.']},
- {id:'leak',g:'◌',c:'power',price:79,en:['Water leak sensor','Sits flat under the sink. Alerts on the first drop.'],ar:['حساس تسريب المياه','يوضع تحت المغسلة. ينبّهك من أول قطرة.']}
-];
+
+
 
 const started=Date.now();let events=0,maxScroll=0,lang=SiteLang.saved();
 
@@ -278,7 +272,7 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-ev]');if(
  if(el.getAttribute('href')&&el.getAttribute('href').indexOf('product')===0)document.getElementById('sShop').textContent='yes';});
 
 function renderFeatured(){
- document.getElementById('featured').innerHTML=CATALOG.map(p=>
+ document.getElementById('featured').innerHTML=CATALOG.filter(p=>p.featured).map(p=>
   '<a class="pcard" href="'+SLUG[p.id]+'" data-ev="product_'+p.id+'"><span class="g">'+p.g+'</span>'+
   '<h3>'+p[lang][0]+'</h3><p>'+p[lang][1]+'</p>'+
   '<div class="prow"><span class="price">'+p.price+' SAR</span><span class="arrow">→</span></div></a>').join('');
