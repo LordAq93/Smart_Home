@@ -134,6 +134,10 @@ footer{padding:44px 0;border-top:1px solid var(--line);font-family:var(--mono);f
 .cl-rm{color:var(--slate);font-size:17px;line-height:1;padding:2px 4px}
 .cl-rm:hover{color:var(--amber)}
 .cartfee{display:flex;justify-content:space-between;gap:14px;font-size:14px;padding:12px 0;color:var(--slate)}
+.cartopt{cursor:pointer;align-items:center}
+.cartopt.on{color:var(--mist)}
+.cartopt input{accent-color:var(--cool);width:15px;height:15px;margin-inline-end:9px;vertical-align:-2px;cursor:pointer}
+.cartnote{font-size:12.5px;color:var(--amber);padding-block-end:10px}
 .panel-btn{position:fixed;inset-block-end:86px;inset-inline-end:20px;z-index:75;background:var(--amber);color:var(--deep);font-family:var(--mono);font-size:12px;font-weight:500;padding:11px 16px;border-radius:999px;box-shadow:0 8px 26px rgba(0,0,0,.45)}
 .panel{position:fixed;inset-block:0;inset-inline-end:0;width:min(360px,100%);z-index:110;background:var(--deep);border-inline-start:1px solid var(--line);transform:translateX(105%);transition:transform .3s;display:flex;flex-direction:column}
 html[dir=rtl] .panel{transform:translateX(-105%)}
@@ -441,12 +445,28 @@ document.querySelectorAll('#keypad button').forEach(b=>b.addEventListener('click
 
 /* cart + fake door */
 /* Charged once per home however many devices are ordered, which is
-   why it is a separate line rather than part of each item. It only
-   applies when something in the cart actually needs an electrician -
-   a sensor that sits under a sink does not. */
+   why it is a separate line rather than part of each item. */
 const INSTALL_FEE=150;
-function needsInstall(){
- return cart.some(l=>CATALOG.find(x=>x.id===l.id).wired);
+
+function hasWired(){return cart.some(l=>CATALOG.find(x=>x.id===l.id).wired);}
+
+/* null means the visitor has not touched the checkbox yet, so it
+   follows the sensible default: on when something needs an
+   electrician, off when everything just plugs in. Once they choose,
+   their choice stands. */
+let installOptedIn=null;
+function installWanted(){return installOptedIn===null?hasWired():installOptedIn;}
+
+function installRow(L){
+ const on=installWanted();
+ const label=L==='ar'?'التركيب عن طريق فنيّنا':'Installation by our technician';
+ const note=L==='ar'?'يتطلب هذا كهربائياً مؤهلاً.':'This needs a qualified electrician.';
+ return '<label class="cartfee cartopt'+(on?' on':'')+'">'+
+   '<span><input type="checkbox" id="wantInstall"'+(on?' checked':'')+'>'+label+'</span>'+
+   '<span>'+INSTALL_FEE+' SAR</span></label>'+
+  /* Opting out on something hardwired is their call, but it should not
+     pass without a word - these need a neutral or 24V wiring. */
+  (hasWired()&&!on?'<div class="cartnote">'+note+'</div>':'');
 }
 
 /* A cart line stores the product id and which option was picked, not
@@ -474,12 +494,10 @@ function drawCart(){
    '<button class="cl-rm" data-rm="'+i+'" aria-label="'+(L==='ar'?'إزالة':'Remove')+'">×</button>'+
   '</div>';
  }).join('')+
- (needsInstall()?'<div class="cartfee"><span>'+
-   (L==='ar'?'التركيب · مرة واحدة للمنزل':'Installation · once per home')+
-   '</span><span>'+INSTALL_FEE+' SAR</span></div>':'');
+ (cart.length?installRow(L):'');
 
  const goods=cart.reduce((s,l)=>s+l.price*l.q,0);
- const total=goods+(needsInstall()?INSTALL_FEE:0);
+ const total=goods+(installWanted()?INSTALL_FEE:0);
  document.getElementById('cartTotal').textContent=total.toLocaleString('en-US')+' SAR';
  updateBadge();
 
@@ -489,6 +507,12 @@ function drawCart(){
   cart.splice(+btn.dataset.rm,1);
   if(cart.length)drawCart(); else closeOverlay();
  }));
+ const wi=document.getElementById('wantInstall');
+ if(wi)wi.addEventListener('change',()=>{
+  installOptedIn=wi.checked;
+  track('install_choice',wi.checked?'yes':'no');
+  drawCart();
+ });
  document.querySelectorAll('#cartLines [data-inc]').forEach(btn=>btn.addEventListener('click',()=>{
   cart[+btn.dataset.inc].q++;track('cart_qty_change','+');drawCart();}));
  document.querySelectorAll('#cartLines [data-dec]').forEach(btn=>btn.addEventListener('click',()=>{
