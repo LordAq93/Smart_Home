@@ -347,8 +347,8 @@ function render(){
  document.getElementById('stickyBuy').textContent=L==='ar'?'أضف للسلة':'Add to cart';
  document.getElementById('stickyName').innerHTML=P[L][0]+'<span>'+unitPrice()+' SAR</span>';
  document.getElementById('reassure').innerHTML=(L==='ar'
-  ?['إرجاع خلال ١٤ يوماً','ضمان سنتين','تركيب ٢٥٠ ريالاً للمنزل']
-  :['14-day return','2-year warranty','250 SAR install per home'])
+  ?['إرجاع خلال ١٤ يوماً','ضمان سنتين','تركيب ١٥٠ ريالاً للمنزل']
+  :['14-day return','2-year warranty','150 SAR install per home'])
   .map(x=>'<span><b>◇</b> '+x+'</span>').join('');
 
  document.getElementById('specHead').textContent=L==='ar'?'المواصفات':'Specifications';
@@ -441,7 +441,7 @@ document.querySelectorAll('#keypad button').forEach(b=>b.addEventListener('click
 /* cart + fake door */
 /* Charged once per home however many devices are ordered, which is
    why it is a separate line rather than part of each item. */
-const INSTALL_FEE=250;
+const INSTALL_FEE=150;
 
 /* A cart line stores the product id and which option was picked, not
    the finished text, so the cart re-reads correctly when the visitor
