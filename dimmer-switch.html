@@ -347,7 +347,7 @@ function render(){
  document.getElementById('stickyBuy').textContent=L==='ar'?'أضف للسلة':'Add to cart';
  document.getElementById('stickyName').innerHTML=P[L][0]+'<span>'+unitPrice()+' SAR</span>';
  document.getElementById('reassure').innerHTML=(L==='ar'
-  ?['إرجاع ١٤ يوم','ضمان سنتين','تركيب ٢٥٠ ريال للبيت']
+  ?['إرجاع خلال ١٤ يوماً','ضمان سنتين','تركيب ٢٥٠ ريالاً للمنزل']
   :['14-day return','2-year warranty','250 SAR install per home'])
   .map(x=>'<span><b>◇</b> '+x+'</span>').join('');
 
@@ -387,20 +387,20 @@ function render(){
  document.getElementById('totalLabel').textContent=L==='ar'?'الإجمالي':'Total';
  document.getElementById('checkoutBtn').textContent=L==='ar'?'إتمام الشراء':'Checkout';
  document.getElementById('closeCart').textContent=L==='ar'?'أكمل التصفح':'Keep looking';
- document.getElementById('doorHead').textContent=L==='ar'?'هذي الدفعة محجوزة':'This batch is spoken for';
+ document.getElementById('doorHead').textContent=L==='ar'?'الدفعة الحالية محجوزة':'This batch is spoken for';
  document.getElementById('doorBody').textContent=L==='ar'
-  ?'ننتج على دفعات من ٥٠. الدفعة الجاية تشحن خلال ثلاثة أسابيع تقريباً. سجّل رقمك وتاخذ الأولوية مع تثبيت سعر التجربة — ما ينخصم منك شي الآن.'
+  ?'ننتج على دفعات من ٥٠ وحدة، وتُشحن الدفعة القادمة خلال ثلاثة أسابيع تقريباً. سجّل رقمك لتحصل على الأولوية مع تثبيت السعر التجريبي، ولا يُخصم منك شيء الآن.'
   :'We build in runs of 50. The next run ships in about three weeks. Leave your number and you get first pick with the pilot price held — nothing is charged now.';
  document.getElementById('dName').placeholder=L==='ar'?'الاسم':'Name';
  document.getElementById('doorSubmit').textContent=L==='ar'?'احجز لي وحدة':'Hold my unit';
  document.getElementById('closeDoor').textContent=L==='ar'?'لا شكراً':'No thanks';
  document.getElementById('thanksHead').textContent=L==='ar'?'محجوزة لك':'Held for you';
  document.getElementById('thanksBody').textContent=L==='ar'
-  ?'أنت ضمن الدفعة الجاية. بنراسلك أول ما تشحن — بدون دفع لين ذاك الوقت.'
+  ?'أنت ضمن الدفعة القادمة، وسنراسلك فور شحنها. ولا دفع حتى ذلك الحين.'
   :"You're in the next run. We'll message you when it ships — no payment until then.";
  document.getElementById('closeThanks').textContent=L==='ar'?'إغلاق':'Close';
  document.getElementById('dWhen').innerHTML=(L==='ar'
-  ?['أبي أشتريه هالأسبوع','خلال شهر','أقارن حالياً فقط']
+  ?['أرغب بشرائه هذا الأسبوع','خلال شهر','أقارن حالياً فقط']
   :["I'd buy this week",'Within a month','Just comparing for now']).map(o=>'<option>'+o+'</option>').join('');
 
  bind();

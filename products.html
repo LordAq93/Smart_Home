@@ -275,18 +275,18 @@ function render(){
 
  /* modal copy */
  document.getElementById('mBody').textContent=L==='ar'
-  ?'ننتج على دفعات. سجّل اسمك ورقمك ونحجزها لك بسعر التجربة — ما ينخصم منك شي الآن.'
+  ?'ننتج على دفعات. سجّل اسمك ورقمك لنحجزها لك بالسعر التجريبي، ولا يُخصم منك شيء الآن.'
   :'We build in runs. Leave your name and number and we hold one at the pilot price — nothing is charged now.';
  document.getElementById('mName').placeholder=L==='ar'?'الاسم':'Name';
  document.getElementById('mSubmit').textContent=L==='ar'?'احجزها لي':'Hold it for me';
  document.getElementById('mClose').textContent=L==='ar'?'إلغاء':'Cancel';
  document.getElementById('okHead').textContent=L==='ar'?'محجوزة لك':'Held for you';
  document.getElementById('okBody').textContent=L==='ar'
-  ?'بنتصل خلال يومين عمل. بدون دفع لين نتكلم.'
+  ?'سنتصل بك خلال يومَي عمل، ولا دفع قبل ذلك.'
   :"We'll call within two working days. No payment until we speak.";
  document.getElementById('okClose').textContent=L==='ar'?'إغلاق':'Close';
  document.getElementById('mWhen').innerHTML=(L==='ar'
-  ?['أبيه هالأسبوع','خلال شهر','أقارن حالياً فقط']
+  ?['أرغب به هذا الأسبوع','خلال شهر','أقارن حالياً فقط']
   :["I want it this week",'Within a month','Just comparing for now']).map(o=>'<option>'+o+'</option>').join('');
 
  drawBoard();
