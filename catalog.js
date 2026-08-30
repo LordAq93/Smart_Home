@@ -15,6 +15,11 @@
    three here means they can differ on purpose rather than by
    accident.
 
+   wired:true marks the products that need an electrician - the ones
+   whose spec lists wiring or a neutral. Only an order containing one
+   of these is charged the installation fee; the rest are placed or
+   plugged in by the customer.
+
    opts is a LIST of choice groups, even when there is only one, so a
    product can offer more than one decision - a finish and a
    placement, say - without the page needing to change again.
@@ -31,7 +36,7 @@ const CATALOG=[
   opts:[{en:'Mounting',ar:'التركيب',items:[{en:'Stick-on',ar:'لاصق'},{en:'Wall bracket',ar:'حامل جداري'}]}],
   spec:[['compat','Any IR split unit'],['sensor','Temp ±0.3°C, humidity'],['power','USB-C, 1m cable'],['net','Wi-Fi 2.4GHz'],['range','8 m line of sight'],['size','62 × 62 × 18 mm']]},
 
- {id:'thermo',g:'◉',c:'climate',img:'images/thermo.svg',price:429,
+ {id:'thermo',wired:true,g:'◉',c:'climate',img:'images/thermo.svg',price:429,
   en:['Zone thermostat',
       'Wired replacement for central AC. One per floor, so upstairs stops cooling an empty room.',
       'Wired replacement for a central AC thermostat. One per floor, so upstairs stops running for an empty room.'],
@@ -68,7 +73,7 @@ const CATALOG=[
            ['هل يتحمّل حرارة الصيف؟','اللوحة الخارجية معتمدة حتى ٦٠ درجة مئوية. وقد يتجاوز الباب المعرّض لأشعة الشمس الغربية هذه الدرجة، لذا نوصي به للأبواب المظللة فقط.'],
            ['هل يمكن للعاملة الدخول دون جوالي؟','نعم. تمنحها رمزاً يعمل من الأحد إلى الخميس، من الثامنة صباحاً إلى الرابعة عصراً، وينتهي تلقائياً عند إلغائه.']]}},
 
- {id:'gate',g:'⊟',c:'security',img:'images/gate.svg',price:449,featured:true,
+ {id:'gate',wired:true,g:'⊟',c:'security',img:'images/gate.svg',price:449,featured:true,
   en:['Gate controller',
       'Wires into the existing gate motor. Open from the car, or automatically on arrival.',
       'Wires into the existing gate motor. Open from the car, or automatically when your phone reaches the street.'],
@@ -88,7 +93,7 @@ const CATALOG=[
   opts:[{en:'Screen',ar:'الشاشة',items:[{en:'Audio only',ar:'صوت فقط',price:449,extra:'449 SAR'},{en:'With 7" screen',ar:'مع شاشة ٧ إنش'}]}],
   spec:[['camera','1080p, 140° lens'],['night','IR to 5 m'],['storage','Local SD or cloud'],['power','Existing 2-wire'],['net','Wi-Fi 2.4GHz']]},
 
- {id:'switch',g:'◫',c:'lighting',img:'images/switch.svg',price:189,featured:true,
+ {id:'switch',wired:true,g:'◫',c:'lighting',img:'images/switch.svg',price:189,featured:true,
   en:['Wall switch, 3 gang',
       'Replaces the plate, not the wiring. Still works by hand if the internet drops.',
       'Replaces the existing plate, not the wiring. Still works by hand if the internet drops.'],
@@ -98,7 +103,7 @@ const CATALOG=[
   opts:[{en:'Gangs',ar:'عدد الأزرار',items:[{en:'1 gang',ar:'زر واحد',price:129,extra:'129 SAR'},{en:'2 gang',ar:'زرّين',price:159,extra:'159 SAR'},{en:'3 gang',ar:'٣ أزرار'}]}],
   spec:[['fits','86mm back box'],['neutral','Required'],['load','10A per gang'],['manual','Yes, always works'],['net','Wi-Fi 2.4GHz']]},
 
- {id:'dimmer',g:'◐',c:'lighting',img:'images/dimmer.svg',price:229,
+ {id:'dimmer',wired:true,g:'◐',c:'lighting',img:'images/dimmer.svg',price:229,
   en:['Dimmer switch',
       'For the majlis. Warm and full at Maghrib, low after Isha, untouched.',
       'For the majlis. Warm and full at Maghrib, low after Isha, without anyone touching it.'],
@@ -198,11 +203,11 @@ const SPECLAB={compat:{en:'Works with',ar:'يتوافق مع'},
    specific to it. This used to be copied into all 11 product pages,
    so a change to the return policy meant 11 edits. */
 const COMMON_FAQ={
- en:[['Who installs it?','Our technician, in one visit, 150 SAR for the whole home — not per device. We call first and tell you what you actually need, which is often less than you ordered.'],
+ en:[['Who installs it?','Our technician, in one visit, 150 SAR for the whole home, charged only when something needs wiring rather than per device. We call first and tell you what you actually need, which is often less than you ordered.'],
      ['What if I move house?','Everything unclips and comes with you. Nothing here is built into the wall except the switches, and those go back to the original plate in ten minutes.'],
      ['Does it work when the internet is down?','Routines keep running on the hub. You lose remote control from outside the house until the connection is back.'],
      ['What is the return policy?','Fourteen days. If it changes nothing about how the house runs, we collect it and refund you.']],
- ar:[['من يتولّى التركيب؟','فني من لدينا، في زيارة واحدة، ١٥٠ ريالاً للمنزل كاملاً — لا لكل جهاز. ونتصل بك قبل ذلك لنخبرك بما تحتاجه فعلاً، وغالباً أقل مما طلبت.'],
+ ar:[['من يتولّى التركيب؟','فني من لدينا، في زيارة واحدة، ١٥٠ ريالاً للمنزل كاملاً مهما كان عدد الأجهزة، وتُحتسب فقط عند وجود جهاز يحتاج تمديدات. ونتصل بك قبل ذلك لنخبرك بما تحتاجه فعلاً، وغالباً أقل مما طلبت.'],
      ['ماذا لو انتقلت من المنزل؟','يُفكّ كل شيء ويأتي معك. ولا شيء مبني في الجدار سوى المفاتيح، وهذه تعود إلى الغطاء الأصلي في عشر دقائق.'],
      ['هل يعمل عند انقطاع الإنترنت؟','تستمر الإجراءات على الوحدة المركزية، ويتوقف التحكم من خارج المنزل فقط حتى يعود الاتصال.'],
      ['ما سياسة الإرجاع؟','أربعة عشر يوماً. وإن لم يغيّر شيئاً في طريقة تشغيل المنزل، نستلمه ونعيد إليك المبلغ.']]};

@@ -346,9 +346,10 @@ function render(){
  document.getElementById('buyNowBtn').textContent=L==='ar'?'اشترِ الآن':'Buy now';
  document.getElementById('stickyBuy').textContent=L==='ar'?'أضف للسلة':'Add to cart';
  document.getElementById('stickyName').innerHTML=P[L][0]+'<span>'+unitPrice()+' SAR</span>';
+ /* The install note only belongs on the products that need one. */
  document.getElementById('reassure').innerHTML=(L==='ar'
-  ?['إرجاع خلال ١٤ يوماً','ضمان سنتين','تركيب ١٥٠ ريالاً للمنزل']
-  :['14-day return','2-year warranty','150 SAR install per home'])
+  ?['إرجاع خلال ١٤ يوماً','ضمان سنتين',P.wired?'تركيب ١٥٠ ريالاً للمنزل':'لا يحتاج تركيباً']
+  :['14-day return','2-year warranty',P.wired?'150 SAR install per home':'No installation needed'])
   .map(x=>'<span><b>◇</b> '+x+'</span>').join('');
 
  document.getElementById('specHead').textContent=L==='ar'?'المواصفات':'Specifications';
@@ -440,8 +441,13 @@ document.querySelectorAll('#keypad button').forEach(b=>b.addEventListener('click
 
 /* cart + fake door */
 /* Charged once per home however many devices are ordered, which is
-   why it is a separate line rather than part of each item. */
+   why it is a separate line rather than part of each item. It only
+   applies when something in the cart actually needs an electrician -
+   a sensor that sits under a sink does not. */
 const INSTALL_FEE=150;
+function needsInstall(){
+ return cart.some(l=>CATALOG.find(x=>x.id===l.id).wired);
+}
 
 /* A cart line stores the product id and which option was picked, not
    the finished text, so the cart re-reads correctly when the visitor
@@ -468,12 +474,12 @@ function drawCart(){
    '<button class="cl-rm" data-rm="'+i+'" aria-label="'+(L==='ar'?'إزالة':'Remove')+'">×</button>'+
   '</div>';
  }).join('')+
- (cart.length?'<div class="cartfee"><span>'+
+ (needsInstall()?'<div class="cartfee"><span>'+
    (L==='ar'?'التركيب · مرة واحدة للمنزل':'Installation · once per home')+
    '</span><span>'+INSTALL_FEE+' SAR</span></div>':'');
 
  const goods=cart.reduce((s,l)=>s+l.price*l.q,0);
- const total=goods+(cart.length?INSTALL_FEE:0);
+ const total=goods+(needsInstall()?INSTALL_FEE:0);
  document.getElementById('cartTotal').textContent=total.toLocaleString('en-US')+' SAR';
  updateBadge();
 
